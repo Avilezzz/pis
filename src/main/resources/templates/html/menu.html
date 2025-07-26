@@ -23,10 +23,12 @@
 
         <div class="col-md-4 mb-4" th:each="item : ${listaProductosTb}">
             <div class="card text-center shadow-sm">
-                <img th:src="@{/img/hamburguesa.png}" class="card-img-top" alt="Imagen Producto" style="height: 200px; object-fit: cover;">
+                <img th:src="${item.imagenUrl != null and !item.imagenUrl.isEmpty()} ? ${item.imagenUrl} : '@{/img/hamburguesa.png}'" 
+                     class="card-img-top" alt="Imagen Producto" style="height: 200px; object-fit: cover;"
+                     th:onerror="'this.src=\'/img/hamburguesa.png\';'">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${item.nombre}">Producto</h5>
-                    <p class="card-text text-muted">DESCRIPCIÓN DEL PRODUCTO</p>
+                    <p class="card-text text-muted" th:text="${item.descripcion != null and !item.descripcion.isEmpty()} ? ${item.descripcion} : 'Sin descripción disponible'">DESCRIPCIÓN DEL PRODUCTO</p>
                     <h6 class="text-success" th:text="'$' + ${item.precio}">$0.00</h6>
 
                     <div class="d-flex justify-content-center align-items-center mb-2">
