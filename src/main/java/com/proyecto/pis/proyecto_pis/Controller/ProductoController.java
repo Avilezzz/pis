@@ -18,7 +18,7 @@ public class ProductoController {
     @GetMapping("/nuevo")
     public String mostrarFormularioProducto(Model model) {
         model.addAttribute("producto", new producto());
-        return "formulario_producto";
+        return "productos_menu/formulario_producto";
     }
 
     // Guardar producto
@@ -32,6 +32,6 @@ public class ProductoController {
     @GetMapping("/menu")
     public String mostrarMenu(Model model) {
         model.addAttribute("listaProductosTb", productoRepository.findAll());
-        return "/html/menu";
+        return "html/menu";
     }
 }
