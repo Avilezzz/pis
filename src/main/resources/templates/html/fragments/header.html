@@ -1,7 +1,10 @@
 <!-- templates/html/fragments/header.html -->
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
   <body>
     <header>
       <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
@@ -40,7 +43,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/menu}"
+              <a class="nav-link" th:href="@{/productos/menu}"
                 ><svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16px"
@@ -68,32 +71,6 @@
                   /></svg
                 >Contacto</a
               >
-            </li>
-            <!-- Si el usuario NO está logueado -->
-            <li class="nav-item" sec:authorize="isAnonymous()">
-              <a class="btn btn-outline-primary ms-3" th:href="@{/login}"
-                >Iniciar sesión</a
-              >
-            </li>
-            <li class="nav-item" sec:authorize="isAnonymous()">
-              <a class="btn btn-outline-success ms-2" th:href="@{/registro}"
-                >Registrarse</a
-              >
-            </li>
-
-            <!-- Si el usuario está logueado -->
-            <li
-              class="nav-item d-flex align-items-center"
-              sec:authorize="isAuthenticated()"
-            >
-              <span class="nav-link disabled text-muted me-1"
-                >Hola, <span sec:authentication="name"></span
-              ></span>
-              <form th:action="@{/logout}" method="post">
-                <button type="submit" class="btn btn-outline-danger btn-sm">
-                  Cerrar sesión
-                </button>
-              </form>
             </li>
           </ul>
         </div>
