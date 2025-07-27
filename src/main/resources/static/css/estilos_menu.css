@@ -181,3 +181,42 @@ body {
   color: #ffa318;
   border-bottom-color: #ffa318;
 }
+
+/* Estilos para botón flotante del carrito */
+.cart-float-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #4a5568;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  z-index: 1060; /* por encima del modal backdrop */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.cart-float-btn:hover {
+  background: #2d3748;
+}
+
+.cart-count-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e11d48; /* rojo */
+  color: #fff;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
