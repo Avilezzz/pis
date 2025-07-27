@@ -10,8 +10,10 @@ import com.proyecto.pis.proyecto_pis.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
 
-@RestController
+@Controller
 @RequestMapping("/pedidos")
 public class PedidoController {
 
@@ -22,6 +24,7 @@ public class PedidoController {
     private ProductoRepository productoRepository;
 
     @PostMapping("/guardar")
+    @ResponseBody
     public ResponseEntity<?> guardarPedido(@RequestBody PedidoRequest request) {
         pedido nuevo = new pedido();
         nuevo.setNombre(request.getNombre());
@@ -47,5 +50,12 @@ public class PedidoController {
 
         pedidoRepository.save(nuevo);
         return ResponseEntity.ok().build();
+    }
+
+    // Vista de administración de pedidos
+    @GetMapping("/admin")
+    public String verPedidos(Model model) {
+        model.addAttribute("pedidos", pedidoRepository.findAll());
+        return "html/pedidos_admin";
     }
 }
