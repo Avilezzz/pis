@@ -1,0 +1,12 @@
+com/proyecto/pis/proyecto_pis/repository/UsuarioRepository.class
+com/proyecto/pis/proyecto_pis/service/UsuarioService.class
+com/proyecto/pis/proyecto_pis/Controller/PaginaController.class
+com/proyecto/pis/proyecto_pis/model/Usuario.class
+com/proyecto/pis/proyecto_pis/config/SecurityConfig.class
+com/proyecto/pis/proyecto_pis/config/DataInitializer.class
+com/proyecto/pis/proyecto_pis/repository/ProductoRepository.class
+com/proyecto/pis/proyecto_pis/Controller/AuthController.class
+com/proyecto/pis/proyecto_pis/ProyectoPisApplication.class
+com/proyecto/pis/proyecto_pis/model/producto.class
+com/proyecto/pis/proyecto_pis/Controller/ProductoController.class
+com/proyecto/pis/proyecto_pis/service/CustomUserDetailsService.class

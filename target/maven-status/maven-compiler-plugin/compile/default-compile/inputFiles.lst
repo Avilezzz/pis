@@ -1,0 +1,12 @@
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/service/CustomUserDetailsService.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/Controller/PaginaController.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/Controller/ProductoController.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/Controller/AuthController.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/config/SecurityConfig.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/ProyectoPisApplication.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/repository/ProductoRepository.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/model/Usuario.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/model/producto.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/service/UsuarioService.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/repository/UsuarioRepository.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/config/DataInitializer.java
