@@ -260,6 +260,9 @@
       <span id="cart-count" class="cart-count-badge">0</span>
     </button>
 
+    <!-- Contenedor de Toasts -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container"></div>
+
     <!-- Lógica de Carrito y Control de Cantidad -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -276,6 +279,25 @@
         const checkoutModal = new bootstrap.Modal(checkoutModalEl);
 
         const checkoutForm = document.getElementById("checkout-form");
+
+        /* Toast helper */
+        function showToast(message, variant = "primary") {
+          const container = document.getElementById("toast-container");
+          const toastEl = document.createElement("div");
+          toastEl.className = `toast align-items-center text-bg-${variant} border-0`;
+          toastEl.setAttribute("role", "alert");
+          toastEl.setAttribute("aria-live", "assertive");
+          toastEl.setAttribute("aria-atomic", "true");
+          toastEl.innerHTML = `
+              <div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>`;
+          container.appendChild(toastEl);
+          const bsToast = new bootstrap.Toast(toastEl, { delay: 4000 });
+          bsToast.show();
+          toastEl.addEventListener("hidden.bs.toast", () => toastEl.remove());
+        }
 
         /* Helpers */
         const getTotalQty = () => cart.reduce((acc, cur) => acc + cur.quantity, 0);
@@ -424,7 +446,7 @@
 
             if (!resp.ok) throw new Error("Error en servidor");
 
-            alert("¡Pedido registrado con éxito!");
+            showToast("¡Pedido registrado con éxito!", "success");
 
             // Reset estados
             checkoutForm.reset();
@@ -432,7 +454,7 @@
             updateCartModal();
             checkoutModal.hide();
           } catch (err) {
-            alert("Hubo un problema al registrar el pedido");
+            showToast("Hubo un problema al registrar el pedido", "danger");
           }
         });
       });
