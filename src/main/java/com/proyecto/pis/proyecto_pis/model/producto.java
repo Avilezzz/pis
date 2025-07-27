@@ -13,6 +13,7 @@ public class producto {
     private String descripcion;
     private double precio;
     private String imagenUrl;
+    private String tipo;
 
     // Getters y Setters
 
@@ -54,5 +55,12 @@ public class producto {
 
     public void setImagenUrl(String imagenUrl) {
         this.imagenUrl = imagenUrl;
+    }
+     public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 }
