@@ -217,6 +217,43 @@
       </div>
     </div>
 
+    <!-- Modal de Checkout -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="checkoutModalLabel">Datos de Pedido</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <form id="checkout-form">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Apellido</label>
+                <input type="text" class="form-control" name="apellido" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Teléfono (10 dígitos - Ecuador)</label>
+                <input type="tel" class="form-control" name="telefono" pattern="09[0-9]{8}" maxlength="10" placeholder="09XXXXXXXX" required />
+                <div class="form-text">Debe empezar con 09 y tener 10 dígitos.</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Correo electrónico</label>
+                <input type="email" class="form-control" name="email" required />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Confirmar Pedido</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <!-- Botón flotante del carrito -->
     <button class="cart-float-btn" id="cart-float-btn" aria-label="Ver carrito">
       <i class="fas fa-shopping-cart fa-lg"></i>
@@ -235,6 +272,10 @@
         const cartCountBadge = document.getElementById("cart-count");
         const cartModalEl = document.getElementById("cartModal");
         const cartModal = new bootstrap.Modal(cartModalEl);
+        const checkoutModalEl = document.getElementById("checkoutModal");
+        const checkoutModal = new bootstrap.Modal(checkoutModalEl);
+
+        const checkoutForm = document.getElementById("checkout-form");
 
         /* Helpers */
         const getTotalQty = () => cart.reduce((acc, cur) => acc + cur.quantity, 0);
@@ -342,14 +383,53 @@
             quantityDisplay.textContent = 0;
 
             updateCartModal();
+            cartModal.show();
           });
         });
 
         buyBtn.addEventListener("click", () => {
-          alert("¡Gracias por tu compra!");
-          cart.length = 0;
-          updateCartModal();
           cartModal.hide();
+          checkoutModal.show();
+        });
+
+        /* Envío del formulario de checkout */
+        checkoutForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          if (!checkoutForm.checkValidity()) {
+            checkoutForm.classList.add("was-validated");
+            return;
+          }
+
+          const formData = new FormData(checkoutForm);
+          const pedido = {
+            nombre: formData.get("nombre"),
+            apellido: formData.get("apellido"),
+            telefono: formData.get("telefono"),
+            email: formData.get("email"),
+          };
+
+          try {
+            const resp = await fetch("/pedidos/guardar", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(pedido),
+            });
+
+            if (!resp.ok) throw new Error("Error en servidor");
+
+            alert("¡Pedido registrado con éxito!");
+
+            // Reset estados
+            checkoutForm.reset();
+            cart.length = 0;
+            updateCartModal();
+            checkoutModal.hide();
+          } catch (err) {
+            alert("Hubo un problema al registrar el pedido");
+          }
         });
       });
     </script>
