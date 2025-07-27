@@ -25,7 +25,7 @@ public class ProductoController {
     @PostMapping("/guardar")
     public String guardarProducto(@ModelAttribute producto producto) {
         productoRepository.save(producto);
-        return "redirect:/productos/menu";
+        return "redirect:/productos/nuevo";
     }
 
     // Mostrar menú (vista de tarjetas)
