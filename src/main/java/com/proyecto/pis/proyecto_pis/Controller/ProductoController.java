@@ -31,7 +31,20 @@ public class ProductoController {
     // Mostrar menú (vista de tarjetas)
     @GetMapping("/menu")
     public String mostrarMenu(Model model) {
+        // Inicializar productos existentes sin tipo
+        inicializarTipoProductos();
         model.addAttribute("listaProductosTb", productoRepository.findAll());
         return "html/menu";
+    }
+
+    // Método para inicializar productos existentes sin tipo
+    private void inicializarTipoProductos() {
+        Iterable<producto> productos = productoRepository.findAll();
+        for (producto prod : productos) {
+            if (prod.getTipo() == null || prod.getTipo().isEmpty()) {
+                prod.setTipo("comida"); // Asignar "comida" por defecto
+                productoRepository.save(prod);
+            }
+        }
     }
 }

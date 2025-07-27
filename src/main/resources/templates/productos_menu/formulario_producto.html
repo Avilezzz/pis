@@ -28,6 +28,15 @@
             <input type="text" th:field="*{imagenUrl}" class="form-control">
         </div>
 
+        <div class="mb-3">
+            <label for="tipo" class="form-label">Tipo de Producto</label>
+            <select th:field="*{tipo}" class="form-select" required>
+                <option value="">Selecciona el tipo</option>
+                <option value="comida">Comida</option>
+                <option value="bebida">Bebida</option>
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
 </div>
