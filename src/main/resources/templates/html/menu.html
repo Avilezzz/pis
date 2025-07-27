@@ -342,7 +342,9 @@
         });
 
         document.querySelectorAll(".product-card").forEach((card) => {
-          const [minusBtn, plusBtn] = card.querySelectorAll(".quantity-btn");
+          const btnsNode = card.querySelectorAll(".quantity-btn");
+          if (btnsNode.length < 2) return; // evita errores si la tarjeta no tiene ambos botones
+          const [minusBtn, plusBtn] = btnsNode;
           const quantityDisplay = card.querySelector(".quantity-display");
           const addCartBtn = card.querySelector(".order-btn");
 
