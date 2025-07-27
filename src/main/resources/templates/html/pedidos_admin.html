@@ -21,65 +21,67 @@
     <div class="container mt-5">
       <h2 class="mb-4">Lista de Pedidos</h2>
 
-      <div class="accordion" id="accordionPedidos">
-        <div th:each="ped : ${pedidos}" class="accordion-item">
-          <h2
-            class="accordion-header"
-            th:attr="id='heading_' + ${ped.id}"
-          >
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              th:attr="data-bs-target='#collapse_' + ${ped.id}"
-              aria-expanded="false"
-              th:attrappend="aria-controls='collapse_' + ${ped.id}"
+      <div id="pedidos-container" th:fragment="pedidosLista">
+        <div class="accordion" id="accordionPedidos">
+          <div th:each="ped : ${pedidos}" class="accordion-item">
+            <h2
+              class="accordion-header"
+              th:attr="id='heading_' + ${ped.id}"
             >
-              Pedido #<span th:text="${ped.id}"></span> —
-              <span th:text="${ped.nombre} + ' ' + ${ped.apellido}"></span>
-            </button>
-          </h2>
-          <div
-            class="accordion-collapse collapse"
-            th:attr="id='collapse_' + ${ped.id}"
-            th:attrappend="aria-labelledby='heading_' + ${ped.id}"
-            data-bs-parent="#accordionPedidos"
-          >
-            <div class="accordion-body">
-              <p>
-                <strong>Cliente:</strong>
-                <span th:text="${ped.nombre} + ' ' + ${ped.apellido}"></span><br />
-                <strong>Teléfono:</strong>
-                <span th:text="${ped.telefono}"></span><br />
-                <strong>Email:</strong>
-                <span th:text="${ped.email}"></span>
-              </p>
-              <div class="table-responsive">
-                <table class="table table-sm align-middle">
-                  <thead>
-                    <tr>
-                      <th>Producto</th>
-                      <th class="text-center">Cantidad</th>
-                      <th class="text-end">Precio Unitario</th>
-                      <th class="text-end">Subtotal</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr th:each="det : ${ped.detalles}">
-                      <td th:text="${det.producto.nombre}"></td>
-                      <td class="text-center" th:text="${det.cantidad}"></td>
-                      <td class="text-end" th:text="${det.precioUnitario}"></td>
-                      <td class="text-end" th:text="${det.subtotal}"></td>
-                    </tr>
-                  </tbody>
-                  <!-- Puedes agregar un total aquí calculándolo en el backend si se requiere -->
-                  <tfoot>
-                    <tr>
-                      <th colspan="3" class="text-end">Total:</th>
-                      <th class="text-end" th:text="${ped.total}"></th>
-                    </tr>
-                  </tfoot>
-                </table>
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                th:attr="data-bs-target='#collapse_' + ${ped.id}"
+                aria-expanded="false"
+                th:attrappend="aria-controls='collapse_' + ${ped.id}"
+              >
+                Pedido #<span th:text="${ped.id}"></span> —
+                <span th:text="${ped.nombre} + ' ' + ${ped.apellido}"></span>
+              </button>
+            </h2>
+            <div
+              class="accordion-collapse collapse"
+              th:attr="id='collapse_' + ${ped.id}"
+              th:attrappend="aria-labelledby='heading_' + ${ped.id}"
+              data-bs-parent="#accordionPedidos"
+            >
+              <div class="accordion-body">
+                <p>
+                  <strong>Cliente:</strong>
+                  <span th:text="${ped.nombre} + ' ' + ${ped.apellido}"></span><br />
+                  <strong>Teléfono:</strong>
+                  <span th:text="${ped.telefono}"></span><br />
+                  <strong>Email:</strong>
+                  <span th:text="${ped.email}"></span>
+                </p>
+                <div class="table-responsive">
+                  <table class="table table-sm align-middle">
+                    <thead>
+                      <tr>
+                        <th>Producto</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-end">Precio Unitario</th>
+                        <th class="text-end">Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="det : ${ped.detalles}">
+                        <td th:text="${det.producto.nombre}"></td>
+                        <td class="text-center" th:text="${det.cantidad}"></td>
+                        <td class="text-end" th:text="${det.precioUnitario}"></td>
+                        <td class="text-end" th:text="${det.subtotal}"></td>
+                      </tr>
+                    </tbody>
+                    <!-- Puedes agregar un total aquí calculándolo en el backend si se requiere -->
+                    <tfoot>
+                      <tr>
+                        <th colspan="3" class="text-end">Total:</th>
+                        <th class="text-end" th:text="${ped.total}"></th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -88,5 +90,27 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Actualizar lista de pedidos cada 10 segundos
+      (function () {
+        const container = document.getElementById("pedidos-container");
+
+        async function refreshPedidos() {
+          try {
+            const resp = await fetch("/pedidos/lista");
+            if (!resp.ok) return;
+            const html = await resp.text();
+            container.innerHTML = html;
+          } catch (err) {
+            console.error("Error actualizando pedidos", err);
+          }
+        }
+
+        // Primera carga extra (por si)
+        refreshPedidos();
+        // Intervalo
+        setInterval(refreshPedidos, 10000);
+      })();
+    </script>
   </body>
 </html>

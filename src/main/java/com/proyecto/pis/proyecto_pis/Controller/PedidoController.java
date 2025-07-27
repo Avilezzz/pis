@@ -58,4 +58,11 @@ public class PedidoController {
         model.addAttribute("pedidos", pedidoRepository.findAll());
         return "html/pedidos_admin";
     }
+
+    // Fragmento HTML con la lista (para refresco via JS)
+    @GetMapping(value = "/lista", produces = "text/html")
+    public String obtenerListaPedidos(Model model) {
+        model.addAttribute("pedidos", pedidoRepository.findAll());
+        return "html/pedidos_admin :: pedidosLista";
+    }
 }
