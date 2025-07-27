@@ -37,7 +37,7 @@
                 th:each="item : ${listaProductosTb}"
                 th:if="${item.tipo == 'comida' or item.tipo == null}"
               >
-                <div class="card product-card">
+                <div class="card product-card" th:attr="data-id=${item.id}">
                   <div class="card-image-container">
                     <img
                       th:src="${item.imagenUrl != null and !item.imagenUrl.isEmpty()} ? ${item.imagenUrl} : '@{/img/hamburguesa.png}'"
@@ -89,7 +89,7 @@
                 th:each="item : ${listaProductosTb}"
                 th:if="${item.tipo == 'bebida'}"
               >
-                <div class="card product-card">
+                <div class="card product-card" th:attr="data-id=${item.id}">
                   <div class="card-image-container">
                     <img
                       th:src="${item.imagenUrl != null and !item.imagenUrl.isEmpty()} ? ${item.imagenUrl} : '@{/img/hamburguesa.png}'"
@@ -135,7 +135,7 @@
                 th:each="item : ${listaProductosTb}"
                 th:if="${item.tipo == 'frappes'}"
               >
-                <div class="card product-card">
+                <div class="card product-card" th:attr="data-id=${item.id}">
                   <div class="card-image-container">
                     <img
                       th:src="${item.imagenUrl != null and !item.imagenUrl.isEmpty()} ? ${item.imagenUrl} : '@{/img/hamburguesa.png}'"
@@ -286,7 +286,7 @@
 
           cart.forEach((item) => {
             const row = document.createElement("tr");
-            row.dataset.name = item.name;
+            row.dataset.id = item.id;
             row.innerHTML = `
               <td>${item.name}</td>
               <td class="text-center">
@@ -315,8 +315,8 @@
           const row = btn.closest("tr");
           if (!row) return;
 
-          const name = row.dataset.name;
-          const item = cart.find((it) => it.name === name);
+          const id = row.dataset.id;
+          const item = cart.find((it) => it.id === id);
           if (!item) return;
 
           if (btn.classList.contains("inc")) {
@@ -371,12 +371,13 @@
               .textContent.replace("$", "")
               .trim();
             const price = parseFloat(priceText);
+            const id = card.dataset.id;
 
-            const existing = cart.find((item) => item.name === name);
+            const existing = cart.find((item) => item.id === id);
             if (existing) {
               existing.quantity += qty;
             } else {
-              cart.push({ name, price, quantity: qty });
+              cart.push({ id, name, price, quantity: qty });
             }
 
             // Reiniciar cantidad visual
@@ -407,6 +408,7 @@
             apellido: formData.get("apellido"),
             telefono: formData.get("telefono"),
             email: formData.get("email"),
+            items: cart.map((it) => ({ productId: it.id, quantity: it.quantity })),
           };
 
           try {

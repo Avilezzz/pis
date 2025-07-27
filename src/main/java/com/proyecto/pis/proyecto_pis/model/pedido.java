@@ -1,6 +1,11 @@
 package com.proyecto.pis.proyecto_pis.model;
 
 import jakarta.persistence.*;
+import java.util.List;
+import java.util.ArrayList;
+
+// entidad detalle
+import com.proyecto.pis.proyecto_pis.model.PedidoDetalle;
 
 @Entity
 public class pedido {
@@ -54,5 +59,16 @@ public class pedido {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PedidoDetalle> detalles = new ArrayList<>();
+
+    public List<PedidoDetalle> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<PedidoDetalle> detalles) {
+        this.detalles = detalles;
     }
 }
