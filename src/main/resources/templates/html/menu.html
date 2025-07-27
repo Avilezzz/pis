@@ -217,6 +217,12 @@
       </div>
     </div>
 
+    <!-- Botón flotante del carrito -->
+    <button class="cart-float-btn" id="cart-float-btn" aria-label="Ver carrito">
+      <i class="fas fa-shopping-cart fa-lg"></i>
+      <span id="cart-count" class="cart-count-badge">0</span>
+    </button>
+
     <!-- Lógica de Carrito y Control de Cantidad -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -225,8 +231,13 @@
         const cartItemsContainer = document.getElementById("cart-items");
         const cartTotal = document.getElementById("cart-total");
         const buyBtn = document.getElementById("buy-btn");
+        const cartFloatBtn = document.getElementById("cart-float-btn");
+        const cartCountBadge = document.getElementById("cart-count");
         const cartModalEl = document.getElementById("cartModal");
         const cartModal = new bootstrap.Modal(cartModalEl);
+
+        /* Helpers */
+        const getTotalQty = () => cart.reduce((acc, cur) => acc + cur.quantity, 0);
 
         function updateCartModal() {
           cartItemsContainer.innerHTML = "";
@@ -234,18 +245,60 @@
 
           cart.forEach((item) => {
             const row = document.createElement("tr");
+            row.dataset.name = item.name;
             row.innerHTML = `
               <td>${item.name}</td>
-              <td class="text-center">${item.quantity}</td>
-              <td class="text-end">$${(item.price * item.quantity).toFixed(2)}</td>
-            `;
+              <td class="text-center">
+                <button class="btn btn-sm btn-light dec">-</button>
+                <span class="mx-2 quantity">${item.quantity}</span>
+                <button class="btn btn-sm btn-light inc">+</button>
+              </td>
+              <td class="text-end">
+                $${(item.price * item.quantity).toFixed(2)}
+                <button class="btn btn-sm btn-link text-danger del" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+              </td>`;
             cartItemsContainer.appendChild(row);
             total += item.price * item.quantity;
           });
 
           cartTotal.textContent = `$${total.toFixed(2)}`;
           buyBtn.disabled = cart.length === 0;
+          cartCountBadge.textContent = getTotalQty();
         }
+
+        /* Delegación de eventos para controles dentro del modal */
+        cartItemsContainer.addEventListener("click", (e) => {
+          const btn = e.target.closest("button");
+          if (!btn) return;
+
+          const row = btn.closest("tr");
+          if (!row) return;
+
+          const name = row.dataset.name;
+          const item = cart.find((it) => it.name === name);
+          if (!item) return;
+
+          if (btn.classList.contains("inc")) {
+            item.quantity += 1;
+          } else if (btn.classList.contains("dec")) {
+            item.quantity -= 1;
+            if (item.quantity <= 0) {
+              const idx = cart.indexOf(item);
+              cart.splice(idx, 1);
+            }
+          } else if (btn.classList.contains("del")) {
+            const idx = cart.indexOf(item);
+            cart.splice(idx, 1);
+          }
+
+          updateCartModal();
+        });
+
+        /* Mostrar modal desde botón flotante */
+        cartFloatBtn.addEventListener("click", () => {
+          updateCartModal();
+          cartModal.show();
+        });
 
         document.querySelectorAll(".product-card").forEach((card) => {
           const [minusBtn, plusBtn] = card.querySelectorAll(".quantity-btn");
@@ -289,7 +342,6 @@
             quantityDisplay.textContent = 0;
 
             updateCartModal();
-            cartModal.show();
           });
         });
 
