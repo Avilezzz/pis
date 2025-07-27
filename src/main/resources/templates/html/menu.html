@@ -20,6 +20,12 @@
     <!-- Header con navbar -->
     <div th:replace="html/fragments/header :: header"></div>
 
+    <!-- Floating Cart Button -->
+    <div class="floating-cart" onclick="openCartModal()">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="cart-count" id="cartCount">0</span>
+    </div>
+
     <div class="container mt-5">
       <div class="menu-container">
         <div class="row">
@@ -61,12 +67,15 @@
                     </p>
 
                     <div class="quantity-controls">
-                      <button class="quantity-btn">-</button>
+                      <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
                       <div class="quantity-display">0</div>
-                      <button class="quantity-btn">+</button>
+                      <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
                     </div>
 
-                    <button class="btn order-btn w-100">
+                    <button 
+                      class="btn order-btn w-100" 
+                      th:onclick="'addToCart(' + ${item.id} + ', \'' + ${item.nombre} + '\', ' + ${item.precio} + ', \'' + ${item.imagenUrl} + '\', this)'"
+                    >
                       Agregar al Carrito
                     </button>
                   </div>
@@ -113,12 +122,15 @@
                     </p>
 
                     <div class="quantity-controls">
-                      <button class="quantity-btn">-</button>
+                      <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
                       <div class="quantity-display">0</div>
-                      <button class="quantity-btn">+</button>
+                      <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
                     </div>
 
-                    <button class="btn order-btn w-100">
+                    <button 
+                      class="btn order-btn w-100" 
+                      th:onclick="'addToCart(' + ${item.id} + ', \'' + ${item.nombre} + '\', ' + ${item.precio} + ', \'' + ${item.imagenUrl} + '\', this)'"
+                    >
                       Agregar al Carrito
                     </button>
                   </div>
@@ -159,12 +171,15 @@
                     </p>
 
                     <div class="quantity-controls">
-                      <button class="quantity-btn">-</button>
+                      <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
                       <div class="quantity-display">0</div>
-                      <button class="quantity-btn">+</button>
+                      <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
                     </div>
 
-                    <button class="btn order-btn w-100">
+                    <button 
+                      class="btn order-btn w-100" 
+                      th:onclick="'addToCart(' + ${item.id} + ', \'' + ${item.nombre} + '\', ' + ${item.precio} + ', \'' + ${item.imagenUrl} + '\', this)'"
+                    >
                       Agregar al Carrito
                     </button>
                   </div>
@@ -176,7 +191,237 @@
       </div>
     </div>
 
+    <!-- Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="cartModalLabel">
+              <i class="fas fa-shopping-cart me-2"></i>Mi Carrito
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="cartItems">
+              <!-- Cart items will be inserted here dynamically -->
+            </div>
+            <div id="emptyCart" class="text-center py-4" style="display: none;">
+              <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+              <p class="text-muted">Tu carrito está vacío</p>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <div>
+              <h5 class="mb-0">Total: $<span id="cartTotal">0.00</span></h5>
+            </div>
+            <div>
+              <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+                Seguir Comprando
+              </button>
+              <button type="button" class="btn btn-success" onclick="purchaseCart()" id="purchaseBtn" disabled>
+                <i class="fas fa-credit-card me-2"></i>Comprar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="successModalLabel">
+              <i class="fas fa-check-circle me-2"></i>¡Compra Exitosa!
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+            <h4>¡Gracias por tu compra!</h4>
+            <p class="text-muted">Tu pedido ha sido procesado exitosamente.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Bootstrap JS (necesario para el menú responsive) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Cart JavaScript -->
+    <script>
+      // Shopping cart functionality
+      let cart = [];
+      
+      function increaseQuantity(button) {
+        const quantityDisplay = button.previousElementSibling;
+        let currentQuantity = parseInt(quantityDisplay.textContent);
+        currentQuantity++;
+        quantityDisplay.textContent = currentQuantity;
+      }
+      
+      function decreaseQuantity(button) {
+        const quantityDisplay = button.nextElementSibling;
+        let currentQuantity = parseInt(quantityDisplay.textContent);
+        if (currentQuantity > 0) {
+          currentQuantity--;
+          quantityDisplay.textContent = currentQuantity;
+        }
+      }
+      
+      function addToCart(id, name, price, imageUrl, button) {
+        const quantityDisplay = button.previousElementSibling.querySelector('.quantity-display');
+        const quantity = parseInt(quantityDisplay.textContent);
+        
+        if (quantity === 0) {
+          alert('Por favor selecciona una cantidad mayor a 0');
+          return;
+        }
+        
+        // Check if item already exists in cart
+        const existingItemIndex = cart.findIndex(item => item.id === id);
+        
+        if (existingItemIndex !== -1) {
+          cart[existingItemIndex].quantity += quantity;
+        } else {
+          cart.push({
+            id: id,
+            name: name,
+            price: price,
+            imageUrl: imageUrl || '/img/hamburguesa.png',
+            quantity: quantity
+          });
+        }
+        
+        // Reset quantity display
+        quantityDisplay.textContent = '0';
+        
+        // Update cart counter
+        updateCartCounter();
+        
+        // Show success message
+        showAddToCartMessage(name, quantity);
+      }
+      
+      function showAddToCartMessage(name, quantity) {
+        // Create a temporary notification
+        const notification = document.createElement('div');
+        notification.className = 'cart-notification';
+        notification.innerHTML = `
+          <i class="fas fa-check-circle me-2"></i>
+          ${quantity} ${name} agregado${quantity > 1 ? 's' : ''} al carrito
+        `;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+          notification.remove();
+        }, 3000);
+      }
+      
+      function updateCartCounter() {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById('cartCount').textContent = totalItems;
+      }
+      
+      function openCartModal() {
+        updateCartDisplay();
+        const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+        cartModal.show();
+      }
+      
+      function updateCartDisplay() {
+        const cartItemsContainer = document.getElementById('cartItems');
+        const emptyCart = document.getElementById('emptyCart');
+        const cartTotal = document.getElementById('cartTotal');
+        const purchaseBtn = document.getElementById('purchaseBtn');
+        
+        if (cart.length === 0) {
+          cartItemsContainer.innerHTML = '';
+          emptyCart.style.display = 'block';
+          cartTotal.textContent = '0.00';
+          purchaseBtn.disabled = true;
+          return;
+        }
+        
+        emptyCart.style.display = 'none';
+        purchaseBtn.disabled = false;
+        
+        let total = 0;
+        cartItemsContainer.innerHTML = '';
+        
+        cart.forEach((item, index) => {
+          const itemTotal = item.price * item.quantity;
+          total += itemTotal;
+          
+          const cartItem = document.createElement('div');
+          cartItem.className = 'cart-item mb-3 p-3 border rounded';
+          cartItem.innerHTML = `
+            <div class="row align-items-center">
+              <div class="col-3">
+                <img src="${item.imageUrl}" alt="${item.name}" class="img-fluid rounded" style="height: 60px; object-fit: cover;">
+              </div>
+              <div class="col-6">
+                <h6 class="mb-1">${item.name}</h6>
+                <p class="text-muted mb-0">$${item.price.toFixed(2)} c/u</p>
+              </div>
+              <div class="col-3 text-end">
+                <div class="d-flex align-items-center justify-content-end mb-2">
+                  <button class="btn btn-sm btn-outline-secondary me-2" onclick="decreaseCartItem(${index})">-</button>
+                  <span class="fw-bold">${item.quantity}</span>
+                  <button class="btn btn-sm btn-outline-secondary ms-2" onclick="increaseCartItem(${index})">+</button>
+                </div>
+                <p class="fw-bold mb-0">$${itemTotal.toFixed(2)}</p>
+                <button class="btn btn-sm btn-outline-danger mt-1" onclick="removeFromCart(${index})">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          `;
+          cartItemsContainer.appendChild(cartItem);
+        });
+        
+        cartTotal.textContent = total.toFixed(2);
+      }
+      
+      function increaseCartItem(index) {
+        cart[index].quantity++;
+        updateCartDisplay();
+        updateCartCounter();
+      }
+      
+      function decreaseCartItem(index) {
+        if (cart[index].quantity > 1) {
+          cart[index].quantity--;
+          updateCartDisplay();
+          updateCartCounter();
+        }
+      }
+      
+      function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCartDisplay();
+        updateCartCounter();
+      }
+      
+      function purchaseCart() {
+        if (cart.length === 0) return;
+        
+        // Hide cart modal
+        const cartModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
+        cartModal.hide();
+        
+        // Show success modal
+        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
+        
+        // Clear cart
+        cart = [];
+        updateCartCounter();
+      }
+    </script>
   </body>
 </html>
