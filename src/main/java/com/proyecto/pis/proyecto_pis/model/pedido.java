@@ -71,4 +71,10 @@ public class pedido {
     public void setDetalles(List<PedidoDetalle> detalles) {
         this.detalles = detalles;
     }
+     // Total del pedido (suma de subtotales)
+    public double getTotal() {
+        return detalles.stream()
+                .mapToDouble(PedidoDetalle::getSubtotal)
+                .sum();
+    }
 }

@@ -49,10 +49,5 @@ public class PedidoController {
         pedidoRepository.save(nuevo);
         return ResponseEntity.ok().build();
     }
-     // Vista de administración de pedidos
-    @GetMapping("/pedido")
-    public String verPedidos(Model model) {
-        model.addAttribute("pedidos", pedidoRepository.findAll());
-        return "html/pedidos_admin";
-    }
+    
 }
