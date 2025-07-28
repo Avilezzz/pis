@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Producto | Administración</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .form-floating > .form-control {
+            border-radius: 12px;
+        }
+        .btn-custom {
+            border-radius: 25px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+        }
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 3px solid #e9ecef;
+        }
+        .image-preview-container {
+            position: relative;
+            display: inline-block;
+        }
+        .no-image-placeholder {
+            width: 200px;
+            height: 200px;
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold text-primary">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        Editar Producto
+                    </h2>
+                    <p class="text-muted">Modifica la información del producto</p>
+                </div>
+
+                <!-- Form Card -->
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-header bg-primary text-white py-4 rounded-top-4">
+                        <h5 class="mb-0 text-center">
+                            <i class="bi bi-box-seam me-2"></i>
+                            Información del Producto
+                        </h5>
+                    </div>
+                    <div class="card-body p-5">
+                        <form th:action="@{/productos/actualizar}" method="post" th:object="${producto}" id="editForm">
+                            <!-- ID oculto -->
+                            <input type="hidden" th:field="*{id}">
+                            
+                            <div class="row">
+                                <!-- Columna izquierda: Formulario -->
+                                <div class="col-md-8">
+                                    <!-- Nombre del producto -->
+                                    <div class="form-floating mb-4">
+                                        <input type="text" 
+                                               class="form-control" 
+                                               id="nombre" 
+                                               th:field="*{nombre}" 
+                                               placeholder="Nombre del producto"
+                                               required>
+                                        <label for="nombre">
+                                            <i class="bi bi-tag me-2"></i>
+                                            Nombre del producto
+                                        </label>
+                                    </div>
+
+                                    <!-- Descripción -->
+                                    <div class="form-floating mb-4">
+                                        <textarea class="form-control" 
+                                                  id="descripcion" 
+                                                  th:field="*{descripcion}" 
+                                                  placeholder="Descripción del producto"
+                                                  style="height: 120px"
+                                                  required></textarea>
+                                        <label for="descripcion">
+                                            <i class="bi bi-file-text me-2"></i>
+                                            Descripción
+                                        </label>
+                                    </div>
+
+                                    <!-- Precio y Tipo en una fila -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="number" 
+                                                       class="form-control" 
+                                                       id="precio" 
+                                                       th:field="*{precio}" 
+                                                       placeholder="0.00"
+                                                       step="0.01"
+                                                       min="0"
+                                                       required>
+                                                <label for="precio">
+                                                    <i class="bi bi-currency-dollar me-2"></i>
+                                                    Precio
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <select class="form-select" id="tipo" th:field="*{tipo}" required>
+                                                    <option value="">Selecciona un tipo</option>
+                                                    <option value="comida">🍽️ Comida</option>
+                                                    <option value="bebida">🥤 Bebida</option>
+                                                </select>
+                                                <label for="tipo">
+                                                    <i class="bi bi-list me-2"></i>
+                                                    Tipo de producto
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- URL de imagen -->
+                                    <div class="form-floating mb-4">
+                                        <input type="url" 
+                                               class="form-control" 
+                                               id="imagenUrl" 
+                                               th:field="*{imagenUrl}" 
+                                               placeholder="https://ejemplo.com/imagen.jpg"
+                                               onchange="previewImage()">
+                                        <label for="imagenUrl">
+                                            <i class="bi bi-image me-2"></i>
+                                            URL de la imagen (opcional)
+                                        </label>
+                                        <div class="form-text">
+                                            <i class="bi bi-info-circle me-1"></i>
+                                            Pega la URL de una imagen para mostrar el producto
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Columna derecha: Preview de imagen -->
+                                <div class="col-md-4">
+                                    <div class="text-center">
+                                        <h6 class="text-muted mb-3">
+                                            <i class="bi bi-eye me-2"></i>
+                                            Vista previa
+                                        </h6>
+                                        <div class="image-preview-container" id="imagePreviewContainer">
+                                            <img th:if="${producto.imagenUrl != null and !#strings.isEmpty(producto.imagenUrl)}" 
+                                                 th:src="${producto.imagenUrl}" 
+                                                 alt="Preview" 
+                                                 class="preview-image" 
+                                                 id="imagePreview">
+                                            <div th:unless="${producto.imagenUrl != null and !#strings.isEmpty(producto.imagenUrl)}" 
+                                                 class="no-image-placeholder" 
+                                                 id="noImagePlaceholder">
+                                                <i class="bi bi-image h2 mb-2"></i>
+                                                <small>Sin imagen</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botones de acción -->
+                            <div class="row mt-5">
+                                <div class="col text-center">
+                                    <a href="/productos/ver" class="btn btn-outline-secondary btn-custom me-3">
+                                        <i class="bi bi-arrow-left me-2"></i>
+                                        Cancelar
+                                    </a>
+                                    <button type="submit" class="btn btn-primary btn-custom">
+                                        <i class="bi bi-check-circle me-2"></i>
+                                        Guardar Cambios
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Card de información adicional -->
+                <div class="card mt-4 border-0 bg-light">
+                    <div class="card-body text-center">
+                        <small class="text-muted">
+                            <i class="bi bi-lightbulb me-2"></i>
+                            <strong>Consejo:</strong> Las imágenes de buena calidad ayudan a aumentar las ventas
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function previewImage() {
+            const imageUrl = document.getElementById('imagenUrl').value;
+            const imagePreview = document.getElementById('imagePreview');
+            const noImagePlaceholder = document.getElementById('noImagePlaceholder');
+            const container = document.getElementById('imagePreviewContainer');
+
+            if (imageUrl && imageUrl.trim() !== '') {
+                // Si hay URL, mostrar la imagen
+                if (!imagePreview) {
+                    // Crear elemento img si no existe
+                    const img = document.createElement('img');
+                    img.id = 'imagePreview';
+                    img.className = 'preview-image';
+                    img.alt = 'Preview';
+                    container.appendChild(img);
+                }
+                
+                document.getElementById('imagePreview').src = imageUrl;
+                document.getElementById('imagePreview').style.display = 'block';
+                
+                if (noImagePlaceholder) {
+                    noImagePlaceholder.style.display = 'none';
+                }
+            } else {
+                // Si no hay URL, mostrar placeholder
+                if (imagePreview) {
+                    imagePreview.style.display = 'none';
+                }
+                
+                if (!noImagePlaceholder) {
+                    // Crear placeholder si no existe
+                    const placeholder = document.createElement('div');
+                    placeholder.id = 'noImagePlaceholder';
+                    placeholder.className = 'no-image-placeholder';
+                    placeholder.innerHTML = '<i class="bi bi-image h2 mb-2"></i><small>Sin imagen</small>';
+                    container.appendChild(placeholder);
+                }
+                
+                document.getElementById('noImagePlaceholder').style.display = 'flex';
+            }
+        }
+
+        // Validación del formulario
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            const nombre = document.getElementById('nombre').value.trim();
+            const precio = document.getElementById('precio').value;
+            const tipo = document.getElementById('tipo').value;
+
+            if (!nombre || !precio || !tipo) {
+                e.preventDefault();
+                alert('Por favor completa todos los campos obligatorios.');
+                return false;
+            }
+
+            if (parseFloat(precio) <= 0) {
+                e.preventDefault();
+                alert('El precio debe ser mayor a 0.');
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>

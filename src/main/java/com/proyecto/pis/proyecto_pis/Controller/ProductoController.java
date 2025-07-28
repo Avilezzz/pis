@@ -37,6 +37,39 @@ public class ProductoController {
         return "/html/menu";
     }
 
+    // Vista para mostrar todos los productos en tabla (administración)
+    @GetMapping("/ver")
+    public String verProductos(Model model) {
+        inicializarTipoProductos();
+        model.addAttribute("productos", productoRepository.findAll());
+        return "html/admin/ver_productos";
+    }
+
+    // Vista para editar producto
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+        producto producto = productoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        model.addAttribute("producto", producto);
+        return "html/admin/editar_producto";
+    }
+
+    // Actualizar producto
+    @PostMapping("/actualizar")
+    public String actualizarProducto(@ModelAttribute producto producto) {
+        productoRepository.save(producto);
+        return "redirect:/productos/ver";
+    }
+
+    // Eliminar producto
+    @GetMapping("/eliminar/{id}")
+    public String eliminarProducto(@PathVariable Long id) {
+        productoRepository.deleteById(id);
+        return "redirect:/productos/ver";
+    }
+
+
+
     // Método para inicializar productos existentes sin tipo
     private void inicializarTipoProductos() {
         Iterable<producto> productos = productoRepository.findAll();
