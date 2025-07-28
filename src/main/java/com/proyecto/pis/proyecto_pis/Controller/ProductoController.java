@@ -34,7 +34,7 @@ public class ProductoController {
          // Inicializar productos existentes sin tipo
         inicializarTipoProductos();
         model.addAttribute("listaProductosTb", productoRepository.findAll());
-        return "/html/menu";
+        return "html/menu";
     }
 
     // Método para inicializar productos existentes sin tipo

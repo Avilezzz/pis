@@ -43,7 +43,7 @@
             <a
               href="/productos/nuevo"
               class="nav-link link-dark"
-              th:classappend="${#httpServletRequest.requestURI == '/productos/nuevo'} ? 'active' : ''"
+              th:classappend="${#request.requestURI == '/productos/nuevo'} ? 'active' : ''"
               >Nuevo Producto</a
             >
           </li>
@@ -51,7 +51,7 @@
             <a
               href="/productos/menu"
               class="nav-link link-dark"
-              th:classappend="${#httpServletRequest.requestURI == '/productos/menu'} ? 'active' : ''"
+              th:classappend="${#request.requestURI == '/productos/menu'} ? 'active' : ''"
               >Ver Productos</a
             >
           </li>
@@ -60,9 +60,9 @@
           </li>
           <li>
             <a
-              href="/pedidos/admin"
+              href="/admin/pedido"
               class="nav-link link-dark"
-              th:classappend="${#httpServletRequest.requestURI == '/pedidos/admin'} ? 'active' : ''"
+              th:classappend="${#request.requestURI == '/admin/pedido'} ? 'active' : ''"
               >Ver Pedidos</a
             >
           </li>
