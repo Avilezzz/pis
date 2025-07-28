@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Debug - Ver Productos</title>
+</head>
+<body>
+    <h1>Debug - Lista de Productos</h1>
+    
+    <p>Total productos: <span th:text="${#lists.size(productos)}">0</span></p>
+    
+    <div th:if="${#lists.isEmpty(productos)}">
+        <p>No hay productos en la lista</p>
+    </div>
+    
+    <div th:unless="${#lists.isEmpty(productos)}">
+        <p>Productos encontrados:</p>
+        <ul>
+            <li th:each="producto : ${productos}">
+                ID: <span th:text="${producto.id}">?</span> - 
+                Nombre: <span th:text="${producto.nombre}">?</span> - 
+                Precio: <span th:text="${producto.precio}">?</span>
+            </li>
+        </ul>
+    </div>
+    
+    <a href="/admin/dashboard">Volver al Dashboard</a>
+</body>
+</html>

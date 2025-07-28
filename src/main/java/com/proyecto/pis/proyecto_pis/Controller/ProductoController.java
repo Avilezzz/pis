@@ -45,6 +45,8 @@ public class ProductoController {
         return "html/admin/ver_productos";
     }
 
+
+
     // Vista para editar producto
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
