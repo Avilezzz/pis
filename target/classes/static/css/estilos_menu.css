@@ -1,0 +1,222 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.menu-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin: 20px 0;
+  padding: 40px 30px;
+}
+
+.main-title {
+  font-weight: 600;
+  font-size: 2.2rem;
+  color: #2d3748;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: #4a5568;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.product-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: 420px;
+  margin-bottom: 30px;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e0;
+}
+
+.card-image-container {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  background-color: #f7fafc;
+}
+
+.product-card .card-img-top {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  object-position: center;
+  transition: none;
+}
+
+.price-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #2d3748;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 240px;
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #2d3748;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.card-description {
+  color: #718096;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 40px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.quantity-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e0;
+  background: white;
+  color: #4a5568;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.quantity-btn:hover {
+  background: #4a5568;
+  border-color: #4a5568;
+  color: white;
+}
+
+.quantity-display {
+  background: #f7fafc;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: #2d3748;
+  min-width: 35px;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+}
+
+.order-btn {
+  background: #4a5568;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.order-btn:hover {
+  background: #2d3748;
+  transform: translateY(-1px);
+}
+
+.section-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 50px 0;
+}
+
+/* Sutil diferenciación entre secciones */
+.drink-section .product-card {
+  border-left: 3px solid #f3bb44;
+}
+
+.food-section .product-card {
+  border-left: 3px solid #ffa318;
+}
+
+.drink-section .section-title {
+  color: #f3bb44;
+  border-bottom-color: #f3bb44;
+}
+
+.food-section .section-title {
+  color: #ffa318;
+  border-bottom-color: #ffa318;
+}
+
+/* Estilos para botón flotante del carrito */
+.cart-float-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #4a5568;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  z-index: 1060; /* por encima del modal backdrop */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.cart-float-btn:hover {
+  background: #2d3748;
+}
+
+.cart-count-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e11d48; /* rojo */
+  color: #fff;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}

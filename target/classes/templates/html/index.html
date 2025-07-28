@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Inicio | Las Papas D'Revelo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        color: #333;
+        line-height: 1.6;
+      }
+      .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("/img/portada.webp") center/cover no-repeat;
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+      }
+      .section-title {
+        position: relative;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+      }
+      .section-title:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: #ffc107;
+      }
+      .product-card {
+        border: none;
+        transition: transform 0.3s ease;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+      .product-card:hover {
+        transform: translateY(-10px);
+      }
+      .product-card img {
+        border-radius: 8px 8px 0 0;
+        height: 200px;
+        object-fit: cover;
+      }
+      .btn-custom {
+        background-color: #ffc107;
+        border: none;
+        padding: 10px 25px;
+        font-weight: 500;
+        letter-spacing: 1px;
+      }
+      .btn-custom:hover {
+        background-color: #e0a800;
+      }
+      footer {
+        background-color: #212529;
+        color: rgba(255, 255, 255, 0.7);
+        padding: 30px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <div th:replace="html/fragments/header :: header"></div>
+
+    <!-- Hero section -->
+    <section class="hero">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <h1 class="display-4 fw-bold mb-4">
+              ¡Las mejores papas del barrio!
+            </h1>
+            <p class="lead mb-5">
+              Disfruta de combos, hamburguesas y más con nuestro toque especial.
+            </p>
+            <a href="/menu" class="btn btn-custom btn-lg">Ver Menú</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sobre nosotros -->
+    <section class="py-5">
+      <div class="container py-5">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            <h2 class="section-title">¿Quiénes Somos?</h2>
+            <p class="fs-5 text-muted">
+              En <strong class="text-dark">Las Papas D'Revelo</strong> llevamos
+              sabor y alegría a cada rincón con nuestras deliciosas papas,
+              hamburguesas y snacks. Somos una marca ecuatoriana comprometida
+              con la calidad y el buen servicio.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Productos destacados -->
+    <section class="py-5 bg-light">
+      <div class="container py-5">
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-8 text-center">
+            <h2 class="section-title">Productos Populares</h2>
+            <p class="text-muted">Los favoritos de nuestros clientes</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card product-card h-100">
+              <img
+                src="/img/menuImagenes/1.webp"
+                class="card-img-top"
+                alt="Salchipapas"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Salchipapas</h5>
+                <p class="card-text text-muted">
+                  ¡Crujientes papas, sabrosas y con salsa especial!
+                </p>
+                <p class="h5 text-danger fw-bold">$1.50</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card product-card h-100">
+              <img
+                src="/img/menuImagenes/2.webp"
+                class="card-img-top"
+                alt="Rico Papipollo"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Rico Papipollo</h5>
+                <p class="card-text text-muted">
+                  Jugoso pollo acompañada con sus papas ¡Crujientes!
+                </p>
+                <p class="h5 text-danger fw-bold">$2.00</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card product-card h-100">
+              <img
+                src="/img/menuImagenes/3.webp"
+                class="card-img-top"
+                alt="Salchipapas con Papipollo"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Salchipapas con Papipollo</h5>
+                <p class="card-text text-muted">
+                  Dos sabores exquisitos para un solo paladar
+                </p>
+                <p class="h5 text-danger fw-bold">$2.50</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacto -->
+    <section class="py-5">
+      <div class="container py-5">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            <h2 class="section-title">Contáctanos</h2>
+            <div
+              class="d-flex flex-column flex-md-row justify-content-center gap-4"
+            >
+              <div class="mb-3 mb-md-0">
+                <span class="d-block fw-bold">📍 Ubicación</span>
+                <span>Av. Principal, Esquina de la Sazón</span>
+              </div>
+              <div class="mb-3 mb-md-0">
+                <span class="d-block fw-bold">📱 WhatsApp</span>
+                <a
+                  href="https://wa.me/593999999999"
+                  class="text-success text-decoration-none"
+                  >+593 999 999 999</a
+                >
+              </div>
+              <div>
+                <span class="d-block fw-bold">🕒 Horario</span>
+                <span>Lunes a Domingo - 11:00am a 10:00pm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+      <div class="container">
+        <p class="mb-0">
+          © 2025 Las Papas D'Revelo. Todos los derechos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

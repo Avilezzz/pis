@@ -1,0 +1,13 @@
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/Controller/PedidoViewController.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/Controller/AdminController.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/model/pedido.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/dto/ItemRequest.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/repository/PedidoRepository.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/model/producto.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/Controller/PedidoController.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/Controller/PaginaController.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/model/PedidoDetalle.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/Controller/ProductoController.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/ProyectoPisApplication.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/repository/ProductoRepository.java
+/workspace/src/main/java/com/proyecto/pis/proyecto_pis/dto/PedidoRequest.java
