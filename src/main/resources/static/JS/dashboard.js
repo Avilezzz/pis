@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to load productos view
     function loadProductos() {
         showLoading();
-        fetch('/productos/menu')
+        fetch('/admin/productos/listarproductos')
             .then(response => response.text())
             .then(html => {
                 // Extract only the content from the body, excluding the container wrapper

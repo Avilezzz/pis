@@ -1,0 +1,305 @@
+/* Estilos específicos para la vista de productos en el dashboard */
+
+/* Header de la vista de productos */
+.productos-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #000000;
+}
+
+.productos-header h2 {
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.productos-header p {
+    color: #666666;
+    margin: 0;
+}
+
+/* Botones de acción */
+.productos-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.productos-actions .btn {
+    border: 2px solid #000000;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    padding: 10px 20px;
+}
+
+.productos-actions .btn-primary {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.productos-actions .btn-primary:hover {
+    background-color: #333333;
+    border-color: #333333;
+}
+
+.productos-actions .btn-outline-secondary {
+    color: #000000;
+    border-color: #000000;
+}
+
+.productos-actions .btn-outline-secondary:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Card de la tabla */
+.productos-card {
+    border: 2px solid #000000;
+    border-radius: 10px;
+    background-color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.productos-card .card-header {
+    background-color: #ffffff;
+    border-bottom: 2px solid #000000;
+    padding: 15px 20px;
+}
+
+.productos-card .card-header h5 {
+    color: #000000;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Tabla de productos */
+.productos-table {
+    margin: 0;
+}
+
+.productos-table .table {
+    margin: 0;
+    border: none;
+}
+
+.productos-table .table thead th {
+    background-color: #f8f9fa;
+    border: 1px solid #000000;
+    color: #000000;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    padding: 15px 10px;
+}
+
+.productos-table .table tbody td {
+    border: 1px solid #000000;
+    padding: 15px 10px;
+    vertical-align: middle;
+}
+
+.productos-table .table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Imagen del producto */
+.producto-imagen {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #000000;
+}
+
+.producto-imagen-placeholder {
+    width: 60px;
+    height: 60px;
+    background: #f8f9fa;
+    border: 2px dashed #000000;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666666;
+}
+
+/* Badges de tipo */
+.tipo-badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.tipo-badge.comida {
+    background-color: #ffff00;
+    color: #000000;
+    border: 1px solid #000000;
+}
+
+.tipo-badge.bebida {
+    background-color: #ff0000;
+    color: #ffffff;
+    border: 1px solid #000000;
+}
+
+.tipo-badge.frappes {
+    background-color: #0000ff;
+    color: #ffffff;
+    border: 1px solid #000000;
+}
+
+.tipo-badge.otro {
+    background-color: #666666;
+    color: #ffffff;
+    border: 1px solid #000000;
+}
+
+/* Precio */
+.precio-badge {
+    background-color: #00ff00;
+    color: #000000;
+    border: 1px solid #000000;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* Botones de acciones */
+.acciones-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.acciones-buttons .btn {
+    border: 2px solid #000000;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.acciones-buttons .btn-outline-primary {
+    color: #000000;
+    border-color: #000000;
+}
+
+.acciones-buttons .btn-outline-primary:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.acciones-buttons .btn-outline-danger {
+    color: #ff0000;
+    border-color: #ff0000;
+}
+
+.acciones-buttons .btn-outline-danger:hover {
+    background-color: #ff0000;
+    color: #ffffff;
+}
+
+/* Mensaje cuando no hay productos */
+.no-productos {
+    text-align: center;
+    padding: 50px 20px;
+    color: #666666;
+}
+
+.no-productos i {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+.no-productos h5 {
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.no-productos p {
+    margin-bottom: 20px;
+}
+
+/* Modal de confirmación */
+.modal-content {
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.modal-header {
+    border-bottom: 2px solid #000000;
+    background-color: #ffffff;
+}
+
+.modal-title {
+    color: #000000;
+    font-weight: bold;
+}
+
+.modal-body {
+    background-color: #ffffff;
+}
+
+.modal-footer {
+    border-top: 2px solid #000000;
+    background-color: #ffffff;
+}
+
+.modal .btn {
+    border: 2px solid #000000;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.modal .btn-secondary {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.modal .btn-secondary:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.modal .btn-danger {
+    background-color: #ff0000;
+    color: #ffffff;
+    border-color: #ff0000;
+}
+
+.modal .btn-danger:hover {
+    background-color: #cc0000;
+    border-color: #cc0000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .productos-actions {
+        flex-direction: column;
+    }
+    
+    .productos-table .table {
+        font-size: 12px;
+    }
+    
+    .productos-table .table thead th,
+    .productos-table .table tbody td {
+        padding: 8px 5px;
+    }
+    
+    .producto-imagen,
+    .producto-imagen-placeholder {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .acciones-buttons {
+        flex-direction: column;
+        gap: 2px;
+    }
+}

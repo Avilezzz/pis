@@ -1,5 +1,7 @@
 package com.proyecto.pis.proyecto_pis.Controller;
 
+import com.proyecto.pis.proyecto_pis.repository.ProductoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+    
+    @Autowired
+    private ProductoRepository productoRepository;
     
     @GetMapping("/dashboard")
     public String dashboard(HttpServletRequest request, Model model) {
@@ -30,7 +35,8 @@ public class AdminController {
     }
     
     @GetMapping("/productos/listarproductos")
-    public String menuProductos() {
+    public String menuProductos(Model model) {
+        model.addAttribute("productos", productoRepository.findAll());
         return "html/admin/ver_producto";
     }
     
