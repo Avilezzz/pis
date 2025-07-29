@@ -31,7 +31,7 @@ public class AdminController {
     
     @GetMapping("/productos/listarproductos")
     public String menuProductos() {
-        return "html/admin/ver_producto";
+        return "productos_menu/lista_producto";
     }
     
     @GetMapping("/pedidos/admin")

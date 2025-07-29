@@ -1,0 +1,303 @@
+/* Dashboard Básico - LAS PAPAS D' REVELO */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  border: 2px solid #000000;
+  border-radius: 15px;
+  margin: 10px;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px;
+  background-color: #ffffff;
+  border-right: 2px solid #000000;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 15px;
+  border: 2px solid #000000;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.fries-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #ff0000;
+  border-radius: 8px;
+  position: relative;
+  margin-right: 10px;
+}
+
+.fries-icon::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 15px;
+  background-color: #ffff00;
+  border-radius: 2px;
+}
+
+.fries-icon::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 12px;
+  background-color: #ffff00;
+  border-radius: 2px;
+}
+
+.logo-text {
+  text-align: center;
+}
+
+.logo-text .brand-name {
+  font-size: 14px;
+  font-weight: normal;
+  color: #000000;
+  margin-bottom: 2px;
+}
+
+.logo-text .brand-subtitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ff0000;
+  text-transform: uppercase;
+}
+
+/* Navigation Buttons */
+.nav-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.nav-button {
+  padding: 15px 20px;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 10px;
+  color: #000000;
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.nav-button:hover {
+  background-color: #000000;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.nav-button.active {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 0 15px 15px 0;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.content-placeholder {
+  text-align: center;
+  color: #666666;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+/* Dashboard Content Wrapper */
+.dashboard-content-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #000000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Content Styles */
+.dashboard-content-wrapper .container,
+.dashboard-content-wrapper .container-fluid {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.dashboard-content-wrapper h2 {
+  color: #000000;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.dashboard-content-wrapper .card {
+  border: 2px solid #000000;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.dashboard-content-wrapper .table {
+  border: 2px solid #000000;
+}
+
+.dashboard-content-wrapper .table th {
+  background-color: #f8f9fa;
+  border: 1px solid #000000;
+  font-weight: bold;
+}
+
+.dashboard-content-wrapper .table td {
+  border: 1px solid #000000;
+}
+
+.dashboard-content-wrapper .btn {
+  border: 2px solid #000000;
+  border-radius: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.dashboard-content-wrapper .btn-primary {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.dashboard-content-wrapper .btn-primary:hover {
+  background-color: #333333;
+  border-color: #333333;
+}
+
+.dashboard-content-wrapper .btn-outline-secondary {
+  color: #000000;
+  border-color: #000000;
+}
+
+.dashboard-content-wrapper .btn-outline-secondary:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Form Styles */
+.dashboard-content-wrapper .form-control,
+.dashboard-content-wrapper .form-select {
+  border: 2px solid #000000;
+  border-radius: 8px;
+}
+
+.dashboard-content-wrapper .form-control:focus,
+.dashboard-content-wrapper .form-select:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+}
+
+/* Accordion Styles */
+.dashboard-content-wrapper .accordion-item {
+  border: 2px solid #000000;
+  margin-bottom: 10px;
+}
+
+.dashboard-content-wrapper .accordion-button {
+  background-color: #ffffff;
+  border: none;
+  font-weight: bold;
+}
+
+.dashboard-content-wrapper .accordion-button:not(.collapsed) {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.dashboard-content-wrapper .accordion-button:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+}
+
+/* Dashboard Title */
+.dashboard-title {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: #000000;
+  text-transform: uppercase;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #000000;
+  }
+
+  .main-content {
+    border-radius: 0 0 15px 15px;
+  }
+}
