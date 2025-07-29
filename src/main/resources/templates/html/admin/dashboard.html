@@ -19,20 +19,29 @@
         background: #4a5568;
         color: #fff !important;
       }
+      .content-iframe {
+        border: none;
+        width: 100%;
+        height: calc(100vh - 2rem);
+      }
+      .main-content {
+        height: 100vh;
+        overflow: hidden;
+      }
     </style>
   </head>
   <body>
-    <div class="d-flex">
+    <div class="d-flex main-content">
       <!-- Sidebar -->
       <nav
-        class="sidebar bg-light flex-shrink-0 p-3 border-end min-vh-100"
+        class="sidebar bg-light flex-shrink-0 p-3 border-end"
         id="sidebarMenu"
       >
         <a
-          href="/"
+          href="/html/admin/dashboard"
           class="d-flex align-items-center mb-3 mb-md-4 text-decoration-none"
         >
-          <span class="fs-4">Admin</span>
+          <span class="fs-4">Admin Dashboard</span>
         </a>
         <hr />
         <ul class="nav nav-pills flex-column mb-auto">
@@ -41,17 +50,19 @@
           </li>
           <li>
             <a
-              href="/productos/nuevo"
+              href="#"
+              onclick="loadContent('/productos/nuevo')"
               class="nav-link link-dark"
-              th:classappend="${#httpServletRequest.requestURI == '/productos/nuevo'} ? 'active' : ''"
+              id="nuevo-producto-link"
               >Nuevo Producto</a
             >
           </li>
           <li>
             <a
-              href="/productos/menu"
+              href="#"
+              onclick="loadContent('/productos/menu')"
               class="nav-link link-dark"
-              th:classappend="${#httpServletRequest.requestURI == '/productos/menu'} ? 'active' : ''"
+              id="ver-productos-link"
               >Ver Productos</a
             >
           </li>
@@ -60,24 +71,54 @@
           </li>
           <li>
             <a
-              href="/pedidos/admin"
+              href="#"
+              onclick="loadContent('/admin/pedidos/admin')"
               class="nav-link link-dark"
-              th:classappend="${#httpServletRequest.requestURI == '/pedidos/admin'} ? 'active' : ''"
+              id="ver-pedidos-link"
               >Ver Pedidos</a
+            >
+          </li>
+          <li class="mt-3 mb-1">
+            <span class="text-muted ms-1">Dashboard</span>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="loadContent('/admin/dashboard/home')"
+              class="nav-link link-dark active"
+              id="dashboard-home-link"
+              >Inicio</a
             >
           </li>
         </ul>
       </nav>
 
       <!-- Main content iframe -->
-      <div class="flex-grow-1 p-4">
-        <h1 class="h4">Bienvenido al panel de administración</h1>
-        <p class="text-muted">
-          Selecciona una opción en el menú lateral para comenzar.
-        </p>
+      <div class="flex-grow-1">
+        <iframe
+          id="content-frame"
+          class="content-iframe"
+          src="/admin/dashboard/home"
+          title="Contenido del Dashboard"
+        >
+        </iframe>
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function loadContent(url) {
+        // Cambiar el src del iframe
+        document.getElementById("content-frame").src = url;
+
+        // Actualizar clases activas
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.classList.remove("active");
+        });
+
+        // Agregar clase activa al enlace clickeado
+        event.target.classList.add("active");
+      }
+    </script>
   </body>
 </html>
