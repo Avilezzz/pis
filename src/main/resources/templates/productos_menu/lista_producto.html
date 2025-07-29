@@ -130,14 +130,20 @@
                       ></td>
                       <td>
                         <button
-                          class="btn btn-sm btn-primary me-1"
-                          th:onclick="'editarProducto(' + ${producto.id} + ', \'' + ${#strings.replace(producto.nombre, '\'', '\\\'')} + '\', \'' + ${#strings.replace(producto.descripcion, '\'', '\\\'')} + '\', \'' + ${producto.tipo} + '\', ' + ${producto.precio} + ', \'' + ${#strings.replace(producto.imagenUrl, '\'', '\\\'')} + '\')'"
+                          class="btn btn-sm btn-primary me-1 btn-editar"
+                          th:data-id="${producto.id}"
+                          th:data-nombre="${producto.nombre}"
+                          th:data-descripcion="${producto.descripcion}"
+                          th:data-tipo="${producto.tipo}"
+                          th:data-precio="${producto.precio}"
+                          th:data-imagen="${producto.imagenUrl}"
                         >
                           <i class="fas fa-edit"></i>
                         </button>
                         <button
-                          class="btn btn-sm btn-danger"
-                          th:onclick="'confirmarEliminar(' + ${producto.id} + ', \'' + ${#strings.replace(producto.nombre, '\'', '\\\'')} + '\')'"
+                          class="btn btn-sm btn-danger btn-eliminar"
+                          th:data-id="${producto.id}"
+                          th:data-nombre="${producto.nombre}"
                         >
                           <i class="fas fa-trash"></i>
                         </button>
@@ -347,8 +353,33 @@
         modal.show();
       }
 
-      // Mostrar mensajes de éxito o error si existen
+      // Event listeners para botones de editar y eliminar
       document.addEventListener("DOMContentLoaded", function () {
+        // Botones de editar
+        document.querySelectorAll('.btn-editar').forEach(function(button) {
+          button.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const nombre = this.getAttribute('data-nombre');
+            const descripcion = this.getAttribute('data-descripcion');
+            const tipo = this.getAttribute('data-tipo');
+            const precio = this.getAttribute('data-precio');
+            const imagen = this.getAttribute('data-imagen');
+            
+            editarProducto(id, nombre, descripcion, tipo, precio, imagen);
+          });
+        });
+
+        // Botones de eliminar
+        document.querySelectorAll('.btn-eliminar').forEach(function(button) {
+          button.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const nombre = this.getAttribute('data-nombre');
+            
+            confirmarEliminar(id, nombre);
+          });
+        });
+
+        // Mostrar mensajes de éxito o error si existen
         const urlParams = new URLSearchParams(window.location.search);
         const mensaje = urlParams.get("mensaje");
         const tipo = urlParams.get("tipo");
