@@ -1,1 +1,242 @@
-<!-- aqui va la vista de mi lista de los productos de la base de datos estos seran mostrados en una tabla con un acciones de crud  JPA en las cuales sera editar y eliminar -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fas fa-list"></i> Lista de Productos</h2>
+                    <div class="d-flex gap-2">
+                        <!-- Filtro por tipo -->
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filtroTipo" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-filter"></i> 
+                                <span th:text="${tipoFiltro != null ? tipoFiltro : 'Todos los tipos'}">Todos los tipos</span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="filtroTipo">
+                                <li><a class="dropdown-item" href="/productos/lista">Todos los tipos</a></li>
+                                <li><a class="dropdown-item" href="/productos/lista?tipo=comida">Comida</a></li>
+                                <li><a class="dropdown-item" href="/productos/lista?tipo=bebida">Bebida</a></li>
+                                <li><a class="dropdown-item" href="/productos/lista?tipo=frappes">Frappés</a></li>
+                            </ul>
+                        </div>
+                        <a href="/productos/nuevo" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Nuevo Producto
+                        </a>
+                        <a href="/admin/dashboard" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Información de productos -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            <strong th:text="${#lists.size(productos)}">0</strong> producto(s) encontrado(s)
+                            <span th:if="${tipoFiltro != null}" th:text="' - Filtrado por: ' + ${tipoFiltro}"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla de Productos -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Imagen</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Tipo</th>
+                                        <th>Precio</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="producto : ${productos}">
+                                        <td th:text="${producto.id}"></td>
+                                        <td>
+                                            <img th:if="${producto.imagenUrl != null and producto.imagenUrl != ''}" 
+                                                 th:src="${producto.imagenUrl}" 
+                                                 class="img-thumbnail" 
+                                                 style="width: 50px; height: 50px; object-fit: cover;"
+                                                 alt="Imagen del producto">
+                                            <div th:unless="${producto.imagenUrl != null and producto.imagenUrl != ''}" 
+                                                 class="bg-secondary text-white d-flex align-items-center justify-content-center"
+                                                 style="width: 50px; height: 50px;">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                        </td>
+                                        <td th:text="${producto.nombre}"></td>
+                                        <td th:text="${producto.descripcion}"></td>
+                                        <td>
+                                            <span th:class="${'badge ' + (producto.tipo == 'comida' ? 'bg-primary' : (producto.tipo == 'bebida' ? 'bg-success' : 'bg-warning'))}"
+                                                  th:text="${producto.tipo}"></span>
+                                        </td>
+                                        <td th:text="${'$' + #numbers.formatDecimal(producto.precio, 1, 2)}"></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary me-1" 
+                                                    th:onclick="'editarProducto(' + ${producto.id} + ', \'' + ${#strings.replace(producto.nombre, '\'', '\\\'')} + '\', \'' + ${#strings.replace(producto.descripcion, '\'', '\\\'')} + '\', \'' + ${producto.tipo} + '\', ' + ${producto.precio} + ', \'' + ${#strings.replace(producto.imagenUrl, '\'', '\\\'')} + '\')'">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-danger" 
+                                                    th:onclick="'confirmarEliminar(' + ${producto.id} + ', \'' + ${#strings.replace(producto.nombre, '\'', '\\\'')} + '\')'">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(productos)}">
+                                        <td colspan="7" class="text-center text-muted">
+                                            <i class="fas fa-inbox fa-2x mb-2"></i>
+                                            <br>No hay productos registrados
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Producto -->
+    <div class="modal fade" id="editarProductoModal" tabindex="-1" aria-labelledby="editarProductoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarProductoModalLabel">
+                        <i class="fas fa-edit"></i> Editar Producto
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{/productos/actualizar}" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" id="editId" name="id">
+                        
+                        <div class="mb-3">
+                            <label for="editNombre" class="form-label">Nombre</label>
+                            <input type="text" id="editNombre" name="nombre" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editDescripcion" class="form-label">Descripción</label>
+                            <input type="text" id="editDescripcion" name="descripcion" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editTipo" class="form-label">Tipo de Producto</label>
+                            <select id="editTipo" name="tipo" class="form-select" required>
+                                <option value="">Selecciona el tipo</option>
+                                <option value="comida">Comida</option>
+                                <option value="bebida">Bebida</option>
+                                <option value="frappes">Frappés</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editPrecio" class="form-label">Precio</label>
+                            <input type="number" id="editPrecio" name="precio" step="0.01" class="form-control" min="0" max="9999999" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editImagenUrl" class="form-label">URL Imagen</label>
+                            <input type="text" id="editImagenUrl" name="imagenUrl" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación para Eliminar -->
+    <div class="modal fade" id="eliminarProductoModal" tabindex="-1" aria-labelledby="eliminarProductoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarProductoModalLabel">
+                        <i class="fas fa-exclamation-triangle text-warning"></i> Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas eliminar el producto <strong id="nombreProductoEliminar"></strong>?</p>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <form th:action="@{/productos/eliminar}" method="post" style="display: inline;">
+                        <input type="hidden" id="idProductoEliminar" name="id">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Scripts personalizados -->
+    <script>
+        function editarProducto(id, nombre, descripcion, tipo, precio, imagenUrl) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editNombre').value = nombre;
+            document.getElementById('editDescripcion').value = descripcion || '';
+            document.getElementById('editTipo').value = tipo;
+            document.getElementById('editPrecio').value = precio;
+            document.getElementById('editImagenUrl').value = imagenUrl || '';
+            
+            const modal = new bootstrap.Modal(document.getElementById('editarProductoModal'));
+            modal.show();
+        }
+
+        function confirmarEliminar(id, nombre) {
+            document.getElementById('idProductoEliminar').value = id;
+            document.getElementById('nombreProductoEliminar').textContent = nombre;
+            
+            const modal = new bootstrap.Modal(document.getElementById('eliminarProductoModal'));
+            modal.show();
+        }
+
+        // Mostrar mensajes de éxito o error si existen
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const mensaje = urlParams.get('mensaje');
+            const tipo = urlParams.get('tipo');
+            
+            if (mensaje) {
+                const alertClass = tipo === 'error' ? 'alert-danger' : 'alert-success';
+                const alertHtml = `
+                    <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+                        ${mensaje}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                document.querySelector('.container').insertAdjacentHTML('afterbegin', alertHtml);
+            }
+        });
+    </script>
+</body>
+</html>
