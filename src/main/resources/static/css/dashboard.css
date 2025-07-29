@@ -136,15 +136,137 @@ body {
     background-color: #ffffff;
     border: 2px solid #000000;
     border-radius: 0 15px 15px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
 }
 
 .content-placeholder {
     text-align: center;
     color: #666666;
     font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+/* Dashboard Content Wrapper */
+.dashboard-content-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #000000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Content Styles */
+.dashboard-content-wrapper .container,
+.dashboard-content-wrapper .container-fluid {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.dashboard-content-wrapper h2 {
+    color: #000000;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.dashboard-content-wrapper .card {
+    border: 2px solid #000000;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.dashboard-content-wrapper .table {
+    border: 2px solid #000000;
+}
+
+.dashboard-content-wrapper .table th {
+    background-color: #f8f9fa;
+    border: 1px solid #000000;
+    font-weight: bold;
+}
+
+.dashboard-content-wrapper .table td {
+    border: 1px solid #000000;
+}
+
+.dashboard-content-wrapper .btn {
+    border: 2px solid #000000;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.dashboard-content-wrapper .btn-primary {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.dashboard-content-wrapper .btn-primary:hover {
+    background-color: #333333;
+    border-color: #333333;
+}
+
+.dashboard-content-wrapper .btn-outline-secondary {
+    color: #000000;
+    border-color: #000000;
+}
+
+.dashboard-content-wrapper .btn-outline-secondary:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Form Styles */
+.dashboard-content-wrapper .form-control,
+.dashboard-content-wrapper .form-select {
+    border: 2px solid #000000;
+    border-radius: 8px;
+}
+
+.dashboard-content-wrapper .form-control:focus,
+.dashboard-content-wrapper .form-select:focus {
+    border-color: #000000;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+}
+
+/* Accordion Styles */
+.dashboard-content-wrapper .accordion-item {
+    border: 2px solid #000000;
+    margin-bottom: 10px;
+}
+
+.dashboard-content-wrapper .accordion-button {
+    background-color: #ffffff;
+    border: none;
+    font-weight: bold;
+}
+
+.dashboard-content-wrapper .accordion-button:not(.collapsed) {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.dashboard-content-wrapper .accordion-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
 }
 
 /* Dashboard Title */

@@ -37,20 +37,104 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to load pedidos view
     function loadPedidos() {
-        // You can load content via AJAX or redirect
-        window.location.href = '/admin/pedidos/admin';
+        showLoading();
+        fetch('/admin/pedidos/admin')
+            .then(response => response.text())
+            .then(html => {
+                // Extract only the content from the body, excluding the container wrapper
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const content = doc.querySelector('.container');
+                
+                if (content) {
+                    mainContent.innerHTML = `
+                        <div class="dashboard-content-wrapper">
+                            ${content.outerHTML}
+                        </div>
+                    `;
+                } else {
+                    mainContent.innerHTML = `
+                        <div class="dashboard-content-wrapper">
+                            ${html}
+                        </div>
+                    `;
+                }
+                
+                // Reinitialize Bootstrap components
+                initializeBootstrapComponents();
+            })
+            .catch(error => {
+                console.error('Error loading pedidos:', error);
+                showError('Error al cargar los pedidos');
+            });
     }
     
     // Function to load productos view
     function loadProductos() {
-        // You can load content via AJAX or redirect
-        window.location.href = '/productos/menu';
+        showLoading();
+        fetch('/productos/menu')
+            .then(response => response.text())
+            .then(html => {
+                // Extract only the content from the body, excluding the container wrapper
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const content = doc.querySelector('.container-fluid') || doc.querySelector('.container');
+                
+                if (content) {
+                    mainContent.innerHTML = `
+                        <div class="dashboard-content-wrapper">
+                            ${content.outerHTML}
+                        </div>
+                    `;
+                } else {
+                    mainContent.innerHTML = `
+                        <div class="dashboard-content-wrapper">
+                            ${html}
+                        </div>
+                    `;
+                }
+                
+                // Reinitialize Bootstrap components
+                initializeBootstrapComponents();
+            })
+            .catch(error => {
+                console.error('Error loading productos:', error);
+                showError('Error al cargar los productos');
+            });
     }
     
     // Function to load crear producto view
     function loadCrearProducto() {
-        // You can load content via AJAX or redirect
-        window.location.href = '/productos/nuevo';
+        showLoading();
+        fetch('/productos/nuevo')
+            .then(response => response.text())
+            .then(html => {
+                // Extract only the content from the body, excluding the container wrapper
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const content = doc.querySelector('.container');
+                
+                if (content) {
+                    mainContent.innerHTML = `
+                        <div class="dashboard-content-wrapper">
+                            ${content.outerHTML}
+                        </div>
+                    `;
+                } else {
+                    mainContent.innerHTML = `
+                        <div class="dashboard-content-wrapper">
+                            ${html}
+                        </div>
+                    `;
+                }
+                
+                // Reinitialize Bootstrap components
+                initializeBootstrapComponents();
+            })
+            .catch(error => {
+                console.error('Error loading crear producto:', error);
+                showError('Error al cargar el formulario de producto');
+            });
     }
     
     // Function to show welcome message
@@ -59,6 +143,27 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="content-placeholder">
                 <h2>Bienvenido al Dashboard</h2>
                 <p>Selecciona una opción del menú para comenzar</p>
+            </div>
+        `;
+    }
+    
+    // Function to show loading state
+    function showLoading() {
+        mainContent.innerHTML = `
+            <div class="content-placeholder">
+                <div class="loading-spinner"></div>
+                <p>Cargando...</p>
+            </div>
+        `;
+    }
+    
+    // Function to show error message
+    function showError(message) {
+        mainContent.innerHTML = `
+            <div class="content-placeholder">
+                <h3 style="color: #ff0000;">Error</h3>
+                <p>${message}</p>
+                <button onclick="location.reload()" class="nav-button">Reintentar</button>
             </div>
         `;
     }
@@ -85,4 +190,43 @@ function loadContentAjax(url, targetElement) {
         .catch(error => {
             console.error('Error loading content:', error);
         });
+}
+
+// Function to reinitialize Bootstrap components after dynamic content loading
+function initializeBootstrapComponents() {
+    // Reinitialize tooltips
+    if (typeof bootstrap !== 'undefined') {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Reinitialize popovers
+        const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+        popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl);
+        });
+        
+        // Reinitialize modals
+        const modalTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="modal"]'));
+        modalTriggerList.forEach(function (modalTriggerEl) {
+            modalTriggerEl.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetModal = document.querySelector(this.getAttribute('data-bs-target'));
+                if (targetModal) {
+                    const modal = new bootstrap.Modal(targetModal);
+                    modal.show();
+                }
+            });
+        });
+    }
+    
+    // Reinitialize any custom event listeners for forms
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            // Handle form submission if needed
+            console.log('Form submitted:', form.action);
+        });
+    });
 }
