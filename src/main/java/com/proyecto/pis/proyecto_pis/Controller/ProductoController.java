@@ -18,7 +18,7 @@ public class ProductoController {
     @GetMapping("/nuevo")
     public String mostrarFormularioProducto(Model model) {
         model.addAttribute("producto", new producto());
-        return "productos_menu/formulario_producto";
+        return "redirect:/productos/lista";
     }
 
     // Mostrar lista de productos
@@ -38,20 +38,20 @@ public class ProductoController {
         try {
             // Validar que el producto existe
             if (producto.getId() == null || !productoRepository.existsById(producto.getId())) {
-                return "redirect:/productos/lista?mensaje=Producto no encontrado&tipo=error";
+                return "redirect:/productos/lista";
             }
             
             // Validar campos requeridos
             if (producto.getNombre() == null || producto.getNombre().trim().isEmpty()) {
-                return "redirect:/productos/lista?mensaje=El nombre del producto es requerido&tipo=error";
+                return "redirect:/productos/lista";
             }
             
             if (producto.getPrecio() <= 0) {
-                return "redirect:/productos/lista?mensaje=El precio debe ser mayor a 0&tipo=error";
+                return "redirect:/productos/lista";
             }
             
             productoRepository.save(producto);
-            return "redirect:/productos/lista?mensaje=Producto actualizado exitosamente&tipo=success";
+            return "redirect:/productos/lista";
         } catch (Exception e) {
             return "redirect:/productos/lista?mensaje=Error al actualizar el producto: " + e.getMessage() + "&tipo=error";
         }
@@ -72,7 +72,7 @@ public class ProductoController {
             }
             
             productoRepository.deleteById(id);
-            return "redirect:/productos/lista?mensaje=Producto eliminado exitosamente&tipo=success";
+            return "redirect:/productos/lista";
         } catch (Exception e) {
             return "redirect:/productos/lista?mensaje=Error al eliminar el producto: " + e.getMessage() + "&tipo=error";
         }
@@ -81,7 +81,7 @@ public class ProductoController {
     @PostMapping("/guardar")
     public String guardarProducto(@ModelAttribute producto producto) {
         productoRepository.save(producto);
-         return "redirect:/admin/dashboard";
+         return "redirect:/productos/lista";
     }
 
     // Mostrar menú (vista de tarjetas)

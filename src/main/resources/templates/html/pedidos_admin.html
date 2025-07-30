@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pedidos | Administración</title>
-    <!-- Bootstrap CDN -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -13,75 +12,186 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
   </head>
   <body>
-    <div class="container mt-5">
-      <h2 class="mb-4">Lista de Pedidos</h2>
+    <div class="dashboard-container">
+      <div class="sidebar">
+        <div class="logo-container">
+          <img
+            th:src="@{/img/logoPapaDReveloPis.png}"
+            alt="Logo"
+            class="img-fluid"
+          />
+        </div>
 
-      <div class="accordion" id="accordionPedidos">
-        <div th:each="ped : ${pedidos}" class="accordion-item">
-          <h2 class="accordion-header" th:attr="id='heading_' + ${ped.id}">
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              th:attr="data-bs-target='#collapse_' + ${ped.id}"
-              aria-expanded="false"
-              th:attrappend="aria-controls='collapse_' + ${ped.id}"
-            >
-              Pedido #<span th:text="${ped.id}"></span> —
-              <span th:text="${ped.nombre} + ' ' + ${ped.apellido}"></span>
-            </button>
-          </h2>
-          <div
-            class="accordion-collapse collapse"
-            th:attr="id='collapse_' + ${ped.id}"
-            th:attrappend="aria-labelledby='heading_' + ${ped.id}"
-            data-bs-parent="#accordionPedidos"
+        <div class="nav-buttons">
+          <a href="#" class="nav-button active" data-action="ver-pedidos">
+            <i class="fas fa-clipboard-list me-2"></i> Ver Pedidos
+          </a>
+          <a
+            href="/productos/lista"
+            class="nav-button"
+            data-action="lista-productos"
           >
-            <div class="accordion-body">
-              <p>
-                <strong>Cliente:</strong>
-                <span th:text="${ped.nombre} + ' ' + ${ped.apellido}"></span
-                ><br />
-                <strong>Teléfono:</strong>
-                <span th:text="${ped.telefono}"></span><br />
-                <strong>Email:</strong>
-                <span th:text="${ped.email}"></span>
-              </p>
-              <div class="table-responsive">
-                <table class="table table-sm align-middle">
-                  <thead>
-                    <tr>
-                      <th>Producto</th>
-                      <th class="text-center">Cantidad</th>
-                      <th class="text-end">Precio Unitario</th>
-                      <th class="text-end">Subtotal</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr th:each="det : ${ped.detalles}">
-                      <td th:text="${det.producto.nombre}"></td>
-                      <td class="text-center" th:text="${det.cantidad}"></td>
-                      <td class="text-end" th:text="${det.precioUnitario}"></td>
-                      <td class="text-end" th:text="${det.subtotal}"></td>
-                    </tr>
-                  </tbody>
-                  <!-- Puedes agregar un total aquí calculándolo en el backend si se requiere -->
-                  <tfoot>
-                    <tr>
-                      <th colspan="3" class="text-end">Total:</th>
-                      <th class="text-end" th:text="${ped.total}"></th>
-                    </tr>
-                  </tfoot>
-                </table>
+            <i class="fas fa-boxes me-2"></i> Productos
+          </a>
+        </div>
+
+        <div class="sidebar-footer">
+          <a href="/logout" class="nav-button logout-button">
+            <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+          </a>
+        </div>
+      </div>
+
+      <main class="main-content">
+        <div class="container-fluid py-4">
+          <h2 class="mb-4 dashboard-title">
+            <i class="fas fa-clipboard-list me-3"></i> Gestión de Pedidos
+          </h2>
+
+          <div class="pedidos-list">
+            <div th:each="ped : ${pedidos}" class="pedido-item card mb-3">
+              <div
+                class="card-header d-flex justify-content-between align-items-center"
+              >
+                <h5 class="mb-0 d-flex align-items-center">
+                  <span class="badge bg-primary me-2 order-id"
+                    >#<span th:text="${ped.id}"></span
+                  ></span>
+                  <span th:text="${ped.nombre} + ' ' + ${ped.apellido}"></span
+                  ><br />
+                  <!-- <small class="text-muted ms-3"
+                    ><i class="fas fa-clock me-1"></i>
+                    <span
+                      th:text="${#temporals.format(ped.fechaCreacion, 'dd/MM/yyyy HH:mm')}"
+                    ></span></small
+                  > -->
+                </h5>
+                <button
+                  class="btn btn-sm btn-outline-secondary toggle-details"
+                  data-bs-toggle="collapse"
+                  th:attr="data-bs-target='#collapse_' + ${ped.id}"
+                  aria-expanded="false"
+                  th:aria-controls="'collapse_' + ${ped.id}"
+                >
+                  <i class="fas fa-chevron-down"></i>
+                </button>
               </div>
+
+              <div class="collapse" th:attr="id='collapse_' + ${ped.id}">
+                <div class="card-body">
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <p class="mb-1">
+                        <i class="fas fa-phone me-2 text-primary"></i>
+                        <strong>Teléfono:</strong>
+                        <span th:text="${ped.telefono}"></span>
+                      </p>
+                      <p class="mb-0">
+                        <i class="fas fa-envelope me-2 text-primary"></i>
+                        <strong>Email:</strong>
+                        <span th:text="${ped.email}"></span>
+                      </p>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="mb-1">
+                        <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+                        <!-- <strong>Dirección:</strong>
+                        <span th:text="${ped.direccion}"></span> -->
+                      </p>
+                      <p class="mb-0">
+                        <i class="fas fa-map-marked me-2 text-primary"></i>
+                        <!-- <strong>Referencia:</strong>
+                        <span th:text="${ped.referencia}"></span> -->
+                      </p>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  <h6 class="mb-3 text-secondary">
+                    <i class="fas fa-info-circle me-2"></i> Detalles del Pedido
+                  </h6>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover align-middle">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Producto</th>
+                          <th class="text-center">Cantidad</th>
+                          <th class="text-end">Precio Unitario</th>
+                          <th class="text-end">Subtotal</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr th:each="det : ${ped.detalles}">
+                          <td th:text="${det.producto.nombre}"></td>
+                          <td class="text-center" th:text="${det.cantidad}"></td>
+                          <td
+                            class="text-end"
+                            th:text="${'$' + #numbers.formatDecimal(det.precioUnitario, 1, 2)}"
+                          ></td>
+                          <td
+                            class="text-end"
+                            th:text="${'$' + #numbers.formatDecimal(det.subtotal, 1, 2)}"
+                          ></td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr class="table-primary">
+                          <th colspan="3" class="text-end">Total:</th>
+                          <th
+                            class="text-end"
+                            th:text="${'$' + #numbers.formatDecimal(ped.total, 1, 2)}"
+                          ></th>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+
+                  <div class="d-flex justify-content-end mt-3 button-group">
+                    <button class="btn btn-success me-2">
+                      <i class="fas fa-check me-1"></i> Marcar como Completado
+                    </button>
+                    <button class="btn btn-danger">
+                      <i class="fas fa-times me-1"></i> Cancelar Pedido
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(pedidos)}" class="text-center py-5 no-orders">
+              <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+              <h4 class="text-muted">No hay pedidos registrados</h4>
+              <p class="text-muted">
+                Cuando tengas nuevos pedidos, aparecerán aquí.
+              </p>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Script para animar el icono del botón de detalles
+      document.querySelectorAll(".toggle-details").forEach((button) => {
+        button.addEventListener("click", function () {
+          const icon = this.querySelector("i");
+          // Pequeño retardo para permitir que Bootstrap maneje el colapso primero
+          setTimeout(() => {
+            if (this.classList.contains("collapsed")) {
+              icon.classList.remove("fa-chevron-up");
+              icon.classList.add("fa-chevron-down");
+            } else {
+              icon.classList.remove("fa-chevron-down");
+              icon.classList.add("fa-chevron-up");
+            }
+          }, 100); // Ajusta este valor si es necesario
+        });
+      });
+    </script>
   </body>
 </html>

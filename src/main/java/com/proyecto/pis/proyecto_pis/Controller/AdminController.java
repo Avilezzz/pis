@@ -29,7 +29,7 @@ public class AdminController {
         return "html/admin/nuevo-producto";
     }
     
-    @GetMapping("/productos/listarproductos")
+    @GetMapping("/productos/lista")
     public String menuProductos() {
         return "productos_menu/lista_producto";
     }

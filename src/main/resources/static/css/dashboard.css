@@ -1,303 +1,428 @@
-/* Dashboard Básico - LAS PAPAS D' REVELO */
-* {
+/* Estructura principal del dashboard */
+body {
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f0f2f5; /* Un gris muy suave para el fondo general */
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "Arial", sans-serif;
-  background-color: #ffffff;
-  color: #000000;
+  color: #333;
 }
 
 .dashboard-container {
   display: flex;
   min-height: 100vh;
-  border: 2px solid #000000;
-  border-radius: 15px;
-  margin: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Sombra más pronunciada */
+  border-radius: 12px;
+  margin: 20px;
   overflow: hidden;
 }
 
 /* Sidebar */
 .sidebar {
   width: 280px;
-  background-color: #ffffff;
-  border-right: 2px solid #000000;
-  padding: 20px;
+  background-color: #2c3e50;
+  padding: 30px 20px;
   display: flex;
   flex-direction: column;
-}
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  color: #ecf0f1;
 
+  /* === INICIO DE CAMBIOS PARA FIXED === */
+  position: fixed; /* Lo fija a la ventana */
+  top: 0; /* Lo alinea con la parte superior */
+  left: 0; /* Lo alinea con la parte izquierda */
+  height: 100vh; /* Ocupa el 100% de la altura de la ventana */
+  overflow-y: auto; /* Agrega scroll si el contenido del sidebar es muy largo */
+  z-index: 1030; /* Asegura que esté por encima de otros elementos, como el navbar de Bootstrap si lo tuvieras */
+  /* === FIN DE CAMBIOS PARA FIXED === */
+}
 .logo-container {
   text-align: center;
-  margin-bottom: 30px;
-  padding: 15px;
-  border: 2px solid #000000;
-  border-radius: 10px;
-  background-color: #ffffff;
+  margin-bottom: 50px; /* Más espacio */
+  padding: 10px;
 }
 
-.logo-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
+.logo-container img {
+  max-width: 180px; /* Ajusta el tamaño del logo */
+  height: auto;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.1)); /* Pequeña sombra al logo */
 }
 
-.fries-icon {
-  width: 40px;
-  height: 40px;
-  background-color: #ff0000;
-  border-radius: 8px;
-  position: relative;
-  margin-right: 10px;
-}
-
-.fries-icon::after {
-  content: "";
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 15px;
-  background-color: #ffff00;
-  border-radius: 2px;
-}
-
-.fries-icon::before {
-  content: "";
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 6px;
-  height: 12px;
-  background-color: #ffff00;
-  border-radius: 2px;
-}
-
-.logo-text {
-  text-align: center;
-}
-
-.logo-text .brand-name {
-  font-size: 14px;
-  font-weight: normal;
-  color: #000000;
-  margin-bottom: 2px;
-}
-
-.logo-text .brand-subtitle {
-  font-size: 18px;
-  font-weight: bold;
-  color: #ff0000;
-  text-transform: uppercase;
-}
-
-/* Navigation Buttons */
+/* Botones de navegación */
 .nav-buttons {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px; /* Más espacio entre botones */
+  flex-grow: 1; /* Permite que ocupe el espacio disponible */
 }
 
 .nav-button {
-  padding: 15px 20px;
-  background-color: #ffffff;
-  border: 2px solid #000000;
-  border-radius: 10px;
-  color: #000000;
+  padding: 14px 20px; /* Más padding */
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #bdc3c7; /* Un gris azulado */
   text-decoration: none;
-  text-align: center;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 14px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 1.05rem; /* Un poco más grande */
   transition: all 0.3s ease;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.nav-button i {
+  margin-right: 15px; /* Más espacio para el icono */
+  font-size: 1.2rem;
 }
 
 .nav-button:hover {
-  background-color: #000000;
+  background-color: #34495e; /* Un tono más oscuro en hover */
   color: #ffffff;
-  text-decoration: none;
+  transform: translateX(5px); /* Pequeña animación */
 }
 
 .nav-button.active {
-  background-color: #000000;
+  background-color: #007bff; /* Azul vibrante para activo */
   color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
 }
 
-/* Main Content Area */
+.nav-button.logout-button {
+  margin-top: auto; /* Empuja el botón de cerrar sesión hacia abajo */
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* Separador */
+  padding-top: 20px;
+}
+
+/* Contenido principal */
 .main-content {
-  flex: 1;
-  background-color: #ffffff;
-  border: 2px solid #000000;
-  border-radius: 0 15px 15px 0;
-  padding: 20px;
-  overflow-y: auto;
+  flex-grow: 1;
+  padding: 30px;
+  background-color: #f9fafb;
+
+  /* === INICIO DE CAMBIOS PARA FIXED === */
+  margin-left: 280px; /* Igual al ancho del sidebar */
+  /* === FIN DE CAMBIOS PARA FIXED === */
 }
 
-.content-placeholder {
-  text-align: center;
-  color: #666666;
-  font-size: 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-/* Dashboard Content Wrapper */
-.dashboard-content-wrapper {
-  width: 100%;
-  height: 100%;
-}
-
-/* Loading Spinner */
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #000000;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 15px;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Content Styles */
-.dashboard-content-wrapper .container,
-.dashboard-content-wrapper .container-fluid {
-  max-width: none !important;
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.dashboard-content-wrapper h2 {
-  color: #000000;
-  margin-bottom: 20px;
-  font-weight: bold;
-}
-
-.dashboard-content-wrapper .card {
-  border: 2px solid #000000;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-.dashboard-content-wrapper .table {
-  border: 2px solid #000000;
-}
-
-.dashboard-content-wrapper .table th {
-  background-color: #f8f9fa;
-  border: 1px solid #000000;
-  font-weight: bold;
-}
-
-.dashboard-content-wrapper .table td {
-  border: 1px solid #000000;
-}
-
-.dashboard-content-wrapper .btn {
-  border: 2px solid #000000;
-  border-radius: 8px;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.dashboard-content-wrapper .btn-primary {
-  background-color: #000000;
-  color: #ffffff;
-}
-
-.dashboard-content-wrapper .btn-primary:hover {
-  background-color: #333333;
-  border-color: #333333;
-}
-
-.dashboard-content-wrapper .btn-outline-secondary {
-  color: #000000;
-  border-color: #000000;
-}
-
-.dashboard-content-wrapper .btn-outline-secondary:hover {
-  background-color: #000000;
-  color: #ffffff;
-}
-
-/* Form Styles */
-.dashboard-content-wrapper .form-control,
-.dashboard-content-wrapper .form-select {
-  border: 2px solid #000000;
-  border-radius: 8px;
-}
-
-.dashboard-content-wrapper .form-control:focus,
-.dashboard-content-wrapper .form-select:focus {
-  border-color: #000000;
-  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
-}
-
-/* Accordion Styles */
-.dashboard-content-wrapper .accordion-item {
-  border: 2px solid #000000;
-  margin-bottom: 10px;
-}
-
-.dashboard-content-wrapper .accordion-button {
-  background-color: #ffffff;
-  border: none;
-  font-weight: bold;
-}
-
-.dashboard-content-wrapper .accordion-button:not(.collapsed) {
-  background-color: #000000;
-  color: #ffffff;
-}
-
-.dashboard-content-wrapper .accordion-button:focus {
-  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
-}
-
-/* Dashboard Title */
 .dashboard-title {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 24px;
-  font-weight: bold;
-  color: #000000;
-  text-transform: uppercase;
+  color: #2c3e50; /* Color del título principal */
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+.dashboard-title i {
+  color: #007bff;
+}
+
+/* Contenedor de pedidos */
+.pedidos-list {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Tarjeta de pedido */
+.pedido-item.card {
+  border: none; /* Sin borde de Bootstrap */
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Sombra más suave */
+  transition: all 0.3s ease;
+  background-color: #ffffff;
+}
+
+.pedido-item.card:hover {
+  transform: translateY(-5px); /* Efecto de elevación al pasar el ratón */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.pedido-item .card-header {
+  background-color: #eaf3ff; /* Un azul muy claro para el encabezado */
+  border-bottom: 1px solid #d0e0f0;
+  padding: 1.25rem 1.5rem; /* Más padding */
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #34495e;
+  border-radius: 12px 12px 0 0; /* Bordes redondeados solo arriba */
+}
+
+.pedido-item .card-header h5 {
+  color: #2c3e50;
+  font-size: 1.25rem;
+}
+
+.order-id {
+  font-size: 0.9em;
+  padding: 0.3em 0.7em;
+  border-radius: 0.3rem;
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.pedido-item .card-body {
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 0 0 12px 12px; /* Bordes redondeados solo abajo */
+}
+
+.pedido-item .card-body hr {
+  border-top: 1px dashed #e0e0e0; /* Línea divisoria punteada */
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Botón de detalles */
+.toggle-details {
+  border: 1px solid #007bff;
+  color: #007bff;
+  background-color: transparent;
+  padding: 0.5rem 1rem;
+  border-radius: 25px; /* Botón más redondeado */
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.toggle-details:hover {
+  background-color: #007bff;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.toggle-details i {
+  transition: transform 0.3s ease;
+}
+
+.toggle-details.collapsed i {
+  transform: rotate(0deg);
+}
+
+.toggle-details:not(.collapsed) i {
+  transform: rotate(180deg);
+}
+
+/* Información del cliente en los detalles */
+.card-body p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.card-body p strong {
+  color: #333;
+}
+
+.card-body i.text-primary {
+  color: #007bff !important; /* Asegura el color azul */
+}
+
+/* Tabla de detalles del pedido */
+.table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e9ecef; /* Borde suave para la tabla */
+}
+
+.table-sm th,
+.table-sm td {
+  padding: 0.8rem; /* Más padding en la tabla */
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f7ff; /* Resaltar filas al pasar el ratón */
+}
+
+.table-light thead tr {
+  background-color: #f8f9fa; /* Color de fondo para el encabezado de la tabla */
+  color: #495057;
+}
+
+.table-primary tfoot {
+  background-color: #eaf3ff; /* Fondo para el total */
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Botones de acción al final del pedido */
+.button-group .btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.button-group .btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.button-group .btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+}
+
+.button-group .btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.button-group .btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
+}
+
+/* Mensaje de no pedidos */
+.no-orders {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-top: 30px;
+}
+
+.no-orders i {
+  color: #adb5bd !important; /* Gris más oscuro para el icono */
+  opacity: 0.8;
+}
+
+.no-orders h4,
+.no-orders p {
+  color: #6c757d !important; /* Gris oscuro para el texto */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
   .dashboard-container {
     flex-direction: column;
+    margin: 15px;
   }
 
   .sidebar {
     width: 100%;
     border-right: none;
-    border-bottom: 2px solid #000000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex-direction: row; /* Para poner los botones de navegación en fila */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .logo-container {
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .logo-container img {
+    max-width: 120px;
+  }
+
+  .nav-buttons {
+    flex-direction: row;
+    justify-content: center;
+    flex-grow: 0;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .nav-button {
+    flex-grow: 1;
+    text-align: center;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    justify-content: center; /* Centra el contenido del botón */
+  }
+
+  .nav-button i {
+    margin-right: 8px;
+  }
+
+  .sidebar-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .logout-button {
+    margin-top: 0 !important; /* Elimina el margen superior en mobile */
+    border-top: none !important; /* Elimina el borde superior en mobile */
+    padding-top: 0 !important;
   }
 
   .main-content {
-    border-radius: 0 0 15px 15px;
+    padding: 20px;
+  }
+
+  .dashboard-title {
+    font-size: 1.75rem;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .pedido-item .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .pedido-item .card-header h5 {
+    margin-bottom: 10px;
+  }
+
+  .toggle-details {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .button-group .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-container {
+    margin: 10px;
+    border-radius: 8px;
+  }
+
+  .sidebar {
+    padding: 15px;
+  }
+
+  .main-content {
+    padding: 15px;
+  }
+
+  .dashboard-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .pedido-item .card-body .row > div {
+    margin-bottom: 15px;
+  }
+
+  .pedido-item .card-body .row > div:last-child {
+    margin-bottom: 0;
+  }
+
+  .table-sm th,
+  .table-sm td {
+    font-size: 0.85rem;
+    padding: 0.6rem;
   }
 }
