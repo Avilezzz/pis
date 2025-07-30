@@ -89,8 +89,8 @@
                 th:each="item : ${listaProductosTb}"
                 th:if="${item.tipo == 'bebida'}"
               >
-                <div class="card product-card">
-                  <div class="card product-card" th:attr="data-id=${item.id}">
+                <div class="card product-card" th:attr="data-id=${item.id}">
+                  <div class="card-image-container">
                     <img
                       th:src="${item.imagenUrl != null and !item.imagenUrl.isEmpty()} ? ${item.imagenUrl} : '@{/img/hamburguesa.png}'"
                       class="card-img-top"
