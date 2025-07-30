@@ -61,7 +61,7 @@
                     >#<span th:text="${ped.id}"></span
                   ></span>
                   <span th:text="${ped.nombre} + ' ' + ${ped.apellido}"></span>
-                  <span class="badge ms-2" th:classappend="'bg-' + ${ped.estado?.colorBootstrap ?: 'secondary'}" th:text="${ped.estado?.descripcion ?: 'Sin Estado'}"></span><br />
+                  <span class="badge ms-2" th:classappend="'bg-' + ${ped.estadoEnum?.colorBootstrap ?: 'secondary'}" th:text="${ped.estadoEnum?.descripcion ?: 'Sin Estado'}"></span><br />
                   <!-- <small class="text-muted ms-3"
                     ><i class="fas fa-clock me-1"></i>
                     <span
@@ -157,13 +157,13 @@
                       </h6>
                       <div class="input-group">
                         <select class="form-select estado-select" th:attr="data-pedido-id=${ped.id}">
-                          <option value="PENDIENTE" th:selected="${ped.estado?.name() == 'PENDIENTE'}">Pendiente</option>
-                          <option value="CONFIRMADO" th:selected="${ped.estado?.name() == 'CONFIRMADO'}">Confirmado</option>
-                          <option value="EN_PREPARACION" th:selected="${ped.estado?.name() == 'EN_PREPARACION'}">En Preparación</option>
-                          <option value="LISTO" th:selected="${ped.estado?.name() == 'LISTO'}">Listo para Entrega</option>
-                          <option value="EN_CAMINO" th:selected="${ped.estado?.name() == 'EN_CAMINO'}">En Camino</option>
-                          <option value="ENTREGADO" th:selected="${ped.estado?.name() == 'ENTREGADO'}">Entregado</option>
-                          <option value="CANCELADO" th:selected="${ped.estado?.name() == 'CANCELADO'}">Cancelado</option>
+                          <option value="PENDIENTE" th:selected="${ped.estado == 'PENDIENTE'}">Pendiente</option>
+                          <option value="CONFIRMADO" th:selected="${ped.estado == 'CONFIRMADO'}">Confirmado</option>
+                          <option value="EN_PREPARACION" th:selected="${ped.estado == 'EN_PREPARACION'}">En Preparación</option>
+                          <option value="LISTO" th:selected="${ped.estado == 'LISTO'}">Listo para Entrega</option>
+                          <option value="EN_CAMINO" th:selected="${ped.estado == 'EN_CAMINO'}">En Camino</option>
+                          <option value="ENTREGADO" th:selected="${ped.estado == 'ENTREGADO'}">Entregado</option>
+                          <option value="CANCELADO" th:selected="${ped.estado == 'CANCELADO'}">Cancelado</option>
                         </select>
                         <button class="btn btn-primary btn-cambiar-estado" th:attr="data-pedido-id=${ped.id}">
                           <i class="fas fa-save"></i> Cambiar

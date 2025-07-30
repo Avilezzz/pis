@@ -1,5 +1,8 @@
 package com.proyecto.pis.proyecto_pis.model;
 
+/**
+ * Enum que representa los diferentes estados de un pedido
+ */
 public enum EstadoPedido {
     PENDIENTE("Pendiente", "warning"),
     CONFIRMADO("Confirmado", "info"), 

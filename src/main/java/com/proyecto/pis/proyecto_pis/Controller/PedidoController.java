@@ -32,7 +32,7 @@ public class PedidoController {
         nuevo.setEmail(request.getEmail());
         nuevo.setDireccion(request.getDireccion());
         nuevo.setMetodoPago(request.getMetodoPago());
-        nuevo.setEstado(EstadoPedido.PENDIENTE); // Estado inicial
+        nuevo.setEstadoEnum(EstadoPedido.PENDIENTE); // Estado inicial
 
         // Procesar items
         if (request.getItems() != null) {
@@ -63,7 +63,7 @@ public class PedidoController {
             }
             
             EstadoPedido estado = EstadoPedido.valueOf(nuevoEstado.replace("\"", ""));
-            pedidoExistente.setEstado(estado);
+            pedidoExistente.setEstadoEnum(estado);
             pedidoRepository.save(pedidoExistente);
             
             return ResponseEntity.ok().build();

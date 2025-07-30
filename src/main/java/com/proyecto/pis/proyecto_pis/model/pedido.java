@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 // entidad detalle
 import com.proyecto.pis.proyecto_pis.model.PedidoDetalle;
+import com.proyecto.pis.proyecto_pis.model.EstadoPedido;
 
 @Entity
 public class pedido {
@@ -21,8 +22,8 @@ public class pedido {
     private String direccion;
     private String metodoPago; // "efectivo" o "transferencia"
     
-    @Enumerated(EnumType.STRING)
-    private EstadoPedido estado;
+    @Column(name = "estado")
+    private String estado;
 
     // Getters y Setters
 
@@ -82,12 +83,24 @@ public class pedido {
         this.metodoPago = metodoPago;
     }
 
-    public EstadoPedido getEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoPedido estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public EstadoPedido getEstadoEnum() {
+        try {
+            return estado != null ? EstadoPedido.valueOf(estado) : null;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public void setEstadoEnum(EstadoPedido estadoEnum) {
+        this.estado = estadoEnum != null ? estadoEnum.name() : null;
     }
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
