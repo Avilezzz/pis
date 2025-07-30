@@ -98,13 +98,13 @@
                     <div class="col-md-6">
                       <p class="mb-1">
                         <i class="fas fa-map-marker-alt me-2 text-primary"></i>
-                        <!-- <strong>Dirección:</strong>
-                        <span th:text="${ped.direccion}"></span> -->
+                        <strong>Dirección:</strong>
+                        <span th:text="${ped.direccion}"></span>
                       </p>
                       <p class="mb-0">
-                        <i class="fas fa-map-marked me-2 text-primary"></i>
-                        <!-- <strong>Referencia:</strong>
-                        <span th:text="${ped.referencia}"></span> -->
+                        <i class="fas fa-credit-card me-2 text-primary"></i>
+                        <strong>Método de pago:</strong>
+                        <span th:text="${ped.metodoPago == 'efectivo' ? 'Efectivo' : 'Transferencia bancaria'}" class="badge" th:classappend="${ped.metodoPago == 'efectivo' ? 'bg-success' : 'bg-info'}"></span>
                       </p>
                     </div>
                   </div>
