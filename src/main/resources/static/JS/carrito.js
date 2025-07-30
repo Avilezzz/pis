@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* Helpers */
   const getTotalQty = () => cart.reduce((acc, cur) => acc + cur.quantity, 0);
+  const getTotalProducts = () => cart.length;
 
   function updateCartModal() {
     cartItemsContainer.innerHTML = "";
@@ -59,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cartTotal.textContent = `$${total.toFixed(2)}`;
     buyBtn.disabled = cart.length === 0;
-    cartCountBadge.textContent = getTotalQty();
+    cartCountBadge.textContent = getTotalProducts();
   }
 
   /* Delegación de eventos para controles dentro del modal */
@@ -96,27 +97,37 @@ document.addEventListener("DOMContentLoaded", () => {
     cartModal.show();
   });
 
-  document.querySelectorAll(".product-card").forEach((card) => {
-    const btnsNode = card.querySelectorAll(".quantity-btn");
-    if (btnsNode.length < 2) return; // evita errores si la tarjeta no tiene ambos botones
-    const [minusBtn, plusBtn] = btnsNode;
-    const quantityDisplay = card.querySelector(".quantity-display");
-    const addCartBtn = card.querySelector(".order-btn");
+  /* Delegación de eventos para controles de cantidad en product-cards */
+  document.addEventListener("click", (e) => {
+    const target = e.target;
+    const card = target.closest(".product-card");
+    if (!card) return;
 
-    minusBtn.addEventListener("click", () => {
+    // Manejar botones de cantidad
+    if (target.classList.contains("quantity-btn")) {
+      const quantityDisplay = card.querySelector(".quantity-display");
+      if (!quantityDisplay) return;
+
       let qty = parseInt(quantityDisplay.textContent, 10);
-      if (qty > 0) {
-        qty -= 1;
-        quantityDisplay.textContent = qty;
+      const btnsNode = card.querySelectorAll(".quantity-btn");
+      if (btnsNode.length < 2) return;
+      const [minusBtn, plusBtn] = btnsNode;
+
+      if (target === minusBtn) {
+        if (qty > 0) {
+          qty -= 1;
+          quantityDisplay.textContent = qty;
+        }
+      } else if (target === plusBtn) {
+        quantityDisplay.textContent = qty + 1;
       }
-    });
+    }
 
-    plusBtn.addEventListener("click", () => {
-      let qty = parseInt(quantityDisplay.textContent, 10);
-      quantityDisplay.textContent = qty + 1;
-    });
+    // Manejar botón "Agregar al Carrito"
+    if (target.classList.contains("order-btn")) {
+      const quantityDisplay = card.querySelector(".quantity-display");
+      if (!quantityDisplay) return;
 
-    addCartBtn.addEventListener("click", () => {
       const qty = parseInt(quantityDisplay.textContent, 10);
       if (qty === 0) {
         return;
@@ -142,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       updateCartModal();
       cartModal.show();
-    });
+    }
   });
 
   buyBtn.addEventListener("click", () => {
