@@ -20,6 +20,9 @@ public class pedido {
     private String email;
     private String direccion;
     private String metodoPago; // "efectivo" o "transferencia"
+    
+    @Enumerated(EnumType.STRING)
+    private EstadoPedido estado;
 
     // Getters y Setters
 
@@ -77,6 +80,14 @@ public class pedido {
 
     public void setMetodoPago(String metodoPago) {
         this.metodoPago = metodoPago;
+    }
+
+    public EstadoPedido getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoPedido estado) {
+        this.estado = estado;
     }
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)

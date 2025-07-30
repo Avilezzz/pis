@@ -3,6 +3,7 @@ package com.proyecto.pis.proyecto_pis.Controller;
 import com.proyecto.pis.proyecto_pis.model.pedido;
 import com.proyecto.pis.proyecto_pis.model.PedidoDetalle;
 import com.proyecto.pis.proyecto_pis.model.producto;
+import com.proyecto.pis.proyecto_pis.model.EstadoPedido;
 import com.proyecto.pis.proyecto_pis.dto.PedidoRequest;
 import com.proyecto.pis.proyecto_pis.dto.ItemRequest;
 import com.proyecto.pis.proyecto_pis.repository.PedidoRepository;
@@ -31,6 +32,7 @@ public class PedidoController {
         nuevo.setEmail(request.getEmail());
         nuevo.setDireccion(request.getDireccion());
         nuevo.setMetodoPago(request.getMetodoPago());
+        nuevo.setEstado(EstadoPedido.PENDIENTE); // Estado inicial
 
         // Procesar items
         if (request.getItems() != null) {
@@ -50,6 +52,24 @@ public class PedidoController {
 
         pedidoRepository.save(nuevo);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/cambiar-estado/{id}")
+    public ResponseEntity<?> cambiarEstado(@PathVariable Long id, @RequestBody String nuevoEstado) {
+        try {
+            pedido pedidoExistente = pedidoRepository.findById(id).orElse(null);
+            if (pedidoExistente == null) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            EstadoPedido estado = EstadoPedido.valueOf(nuevoEstado.replace("\"", ""));
+            pedidoExistente.setEstado(estado);
+            pedidoRepository.save(pedidoExistente);
+            
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
     
 }
