@@ -60,8 +60,8 @@
                   <span class="badge bg-primary me-2 order-id"
                     >#<span th:text="${ped.id}"></span
                   ></span>
-                  <span th:text="${ped.nombre} + ' ' + ${ped.apellido}"></span
-                  ><br />
+                  <span th:text="${ped.nombre} + ' ' + ${ped.apellido}"></span>
+                  <span class="badge ms-2" th:classappend="'bg-' + ${ped.estadoEnum?.colorBootstrap ?: 'secondary'}" th:text="${ped.estadoEnum?.descripcion ?: 'Sin Estado'}"></span><br />
                   <!-- <small class="text-muted ms-3"
                     ><i class="fas fa-clock me-1"></i>
                     <span
@@ -98,13 +98,13 @@
                     <div class="col-md-6">
                       <p class="mb-1">
                         <i class="fas fa-map-marker-alt me-2 text-primary"></i>
-                        <!-- <strong>Dirección:</strong>
-                        <span th:text="${ped.direccion}"></span> -->
+                        <strong>Dirección:</strong>
+                        <span th:text="${ped.direccion}"></span>
                       </p>
                       <p class="mb-0">
-                        <i class="fas fa-map-marked me-2 text-primary"></i>
-                        <!-- <strong>Referencia:</strong>
-                        <span th:text="${ped.referencia}"></span> -->
+                        <i class="fas fa-credit-card me-2 text-primary"></i>
+                        <strong>Método de pago:</strong>
+                        <span th:text="${ped.metodoPago == 'efectivo' ? 'Efectivo' : 'Transferencia bancaria'}" class="badge" th:classappend="${ped.metodoPago == 'efectivo' ? 'bg-success' : 'bg-info'}"></span>
                       </p>
                     </div>
                   </div>
@@ -150,13 +150,36 @@
                     </table>
                   </div>
 
-                  <div class="d-flex justify-content-end mt-3 button-group">
-                    <button class="btn btn-success me-2">
-                      <i class="fas fa-check me-1"></i> Marcar como Completado
-                    </button>
-                    <button class="btn btn-danger">
-                      <i class="fas fa-times me-1"></i> Cancelar Pedido
-                    </button>
+                  <div class="row mt-4">
+                    <div class="col-md-6">
+                      <h6 class="mb-3 text-secondary">
+                        <i class="fas fa-tasks me-2"></i> Cambiar Estado
+                      </h6>
+                      <div class="input-group">
+                        <select class="form-select estado-select" th:attr="data-pedido-id=${ped.id}">
+                          <option value="PENDIENTE" th:selected="${ped.estado == 'PENDIENTE'}">Pendiente</option>
+                          <option value="CONFIRMADO" th:selected="${ped.estado == 'CONFIRMADO'}">Confirmado</option>
+                          <option value="EN_PREPARACION" th:selected="${ped.estado == 'EN_PREPARACION'}">En Preparación</option>
+                          <option value="LISTO" th:selected="${ped.estado == 'LISTO'}">Listo para Entrega</option>
+                          <option value="EN_CAMINO" th:selected="${ped.estado == 'EN_CAMINO'}">En Camino</option>
+                          <option value="ENTREGADO" th:selected="${ped.estado == 'ENTREGADO'}">Entregado</option>
+                          <option value="CANCELADO" th:selected="${ped.estado == 'CANCELADO'}">Cancelado</option>
+                        </select>
+                        <button class="btn btn-primary btn-cambiar-estado" th:attr="data-pedido-id=${ped.id}">
+                          <i class="fas fa-save"></i> Cambiar
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end justify-content-end">
+                      <div class="button-group">
+                        <button class="btn btn-success me-2 btn-sm" th:attr="data-pedido-id=${ped.id}" onclick="cambiarEstadoRapido(this, 'ENTREGADO')">
+                          <i class="fas fa-check me-1"></i> Marcar Entregado
+                        </button>
+                        <button class="btn btn-danger btn-sm" th:attr="data-pedido-id=${ped.id}" onclick="cambiarEstadoRapido(this, 'CANCELADO')">
+                          <i class="fas fa-times me-1"></i> Cancelar
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -190,6 +213,52 @@
               icon.classList.add("fa-chevron-up");
             }
           }, 100); // Ajusta este valor si es necesario
+        });
+      });
+
+      // Función para cambiar estado de pedido
+      async function cambiarEstado(pedidoId, nuevoEstado) {
+        try {
+          const response = await fetch(`/pedidos/cambiar-estado/${pedidoId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(nuevoEstado)
+          });
+
+          if (response.ok) {
+            // Mostrar mensaje de éxito y recargar la página
+            alert('Estado actualizado correctamente');
+            window.location.reload();
+          } else {
+            alert('Error al actualizar el estado');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error al conectar con el servidor');
+        }
+      }
+
+      // Función para cambio rápido de estado
+      function cambiarEstadoRapido(button, estado) {
+        const pedidoId = button.getAttribute('data-pedido-id');
+        cambiarEstado(pedidoId, estado);
+      }
+
+      // Event listeners para botones de cambiar estado
+      document.addEventListener('DOMContentLoaded', function() {
+        // Botones de cambiar estado personalizados
+        document.querySelectorAll('.btn-cambiar-estado').forEach(button => {
+          button.addEventListener('click', function() {
+            const pedidoId = this.getAttribute('data-pedido-id');
+            const select = document.querySelector(`.estado-select[data-pedido-id="${pedidoId}"]`);
+            const nuevoEstado = select.value;
+            
+            if (nuevoEstado) {
+              cambiarEstado(pedidoId, nuevoEstado);
+            }
+          });
         });
       });
     </script>
