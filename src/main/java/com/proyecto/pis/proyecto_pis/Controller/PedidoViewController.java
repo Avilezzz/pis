@@ -30,7 +30,7 @@ public class PedidoViewController {
         return "html/pedidos_admin :: pedidosLista";
     }
 
-     @DeleteMapping("/pedido/eliminar/{id}")
+     @DeleteMapping("/pedidos/eliminar/{id}")
     @ResponseBody
     public ResponseEntity<?> eliminarPedido(@PathVariable Long id) {
         try {
