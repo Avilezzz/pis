@@ -13,6 +13,7 @@ public class LoginController {
 
     @GetMapping("/")
     public String homeRedirect() {
-        return "redirect:/admin/pedido";
+        // Redirigir a una página pública en lugar de admin
+        return "redirect:/productos/menu";
     }
 }
