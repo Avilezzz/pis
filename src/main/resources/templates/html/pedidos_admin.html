@@ -161,7 +161,7 @@
                     </table>
                   </div>
 
-                  <div class="d-flex justify-content-end mt-3 button-group">
+                  <div class="d-flex justify-content-end mt-3 button-group gap-2">
                     <button
                       class="btn btn-outline-success enviar-whatsapp"
                       th:data-id="${ped.id}"
@@ -172,6 +172,13 @@
                       th:data-metodopago="${ped.metodoPago}"
                     >
                       <i class="fab fa-whatsapp me-1"></i> Enviar por WhatsApp
+                    </button>
+                    <button
+                      class="btn btn-danger completar-pedido"
+                      th:data-id="${ped.id}"
+                      th:data-nombre="${ped.nombre} + ' ' + ${ped.apellido}"
+                    >
+                      <i class="fas fa-check me-1"></i> Hecho
                     </button>
                   </div>
                 </div>
@@ -255,6 +262,75 @@ Tu pedido será entregado con pago en efectivo al momento de la entrega. ¡Graci
             1
           )}?text=${encodeURIComponent(mensaje)}`;
           window.open(url, "_blank");
+        });
+      });
+
+      // Función para completar pedidos
+      document.querySelectorAll(".completar-pedido").forEach((button) => {
+        button.addEventListener("click", function () {
+          const pedidoId = this.dataset.id;
+          const nombreCliente = this.dataset.nombre;
+
+          // Mostrar confirmación
+          if (
+            confirm(
+              `¿Estás seguro de que quieres marcar como completado el pedido de ${nombreCliente}?\n\nEsta acción eliminará el pedido de la base de datos y no se puede deshacer.`
+            )
+          ) {
+            // Deshabilitar el botón para evitar doble clic
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Procesando...';
+
+            // Realizar petición DELETE
+            fetch(`/pedidos/eliminar/${pedidoId}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.status === "success") {
+                  // Mostrar mensaje de éxito
+                  alert("Pedido completado y eliminado exitosamente");
+                  
+                  // Remover el elemento del DOM con animación
+                  const pedidoItem = this.closest(".pedido-item");
+                  pedidoItem.style.transition = "opacity 0.5s ease-out";
+                  pedidoItem.style.opacity = "0";
+                  
+                  setTimeout(() => {
+                    pedidoItem.remove();
+                    
+                    // Verificar si no quedan más pedidos
+                    const remainingPedidos = document.querySelectorAll(".pedido-item");
+                    if (remainingPedidos.length === 0) {
+                      // Mostrar mensaje de "no hay pedidos"
+                      const container = document.querySelector(".pedidos-list");
+                      container.innerHTML = `
+                        <div class="text-center py-5 no-orders">
+                          <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+                          <h4 class="text-muted">No hay pedidos registrados</h4>
+                          <p class="text-muted">Cuando tengas nuevos pedidos, aparecerán aquí.</p>
+                        </div>
+                      `;
+                    }
+                  }, 500);
+                } else {
+                  alert("Error al completar el pedido: " + data.message);
+                  // Rehabilitar el botón
+                  this.disabled = false;
+                  this.innerHTML = '<i class="fas fa-check me-1"></i> Hecho';
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+                alert("Error de conexión al completar el pedido");
+                // Rehabilitar el botón
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-check me-1"></i> Hecho';
+              });
+          }
         });
       });
     </script>

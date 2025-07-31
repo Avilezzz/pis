@@ -61,6 +61,20 @@ public class PedidoController {
         }
     }
 
-   
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarPedido(@PathVariable Long id) {
+        try {
+            if (!pedidoRepository.existsById(id)) {
+                return ResponseEntity.badRequest().body("{\"status\":\"error\",\"message\":\"Pedido no encontrado\"}");
+            }
+            
+            pedidoRepository.deleteById(id);
+            System.out.println("Pedido eliminado exitosamente: ID " + id);
+            return ResponseEntity.ok().body("{\"status\":\"success\",\"message\":\"Pedido completado y eliminado exitosamente\"}");
+        } catch (Exception e) {
+            System.out.println("Error al eliminar pedido: " + e.getMessage());
+            return ResponseEntity.badRequest().body("{\"status\":\"error\",\"message\":\"Error al eliminar pedido: " + e.getMessage() + "\"}");
+        }
+    }
     
 }
