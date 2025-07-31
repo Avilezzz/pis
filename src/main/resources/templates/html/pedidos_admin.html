@@ -26,7 +26,11 @@
         </div>
 
         <div class="nav-buttons">
-          <a href="#" class="nav-button active" data-action="ver-pedidos">
+          <a
+            href="/admin/pedido"
+            class="nav-button active"
+            data-action="ver-pedidos"
+          >
             <i class="fas fa-clipboard-list me-2"></i> Ver Pedidos
           </a>
           <a
@@ -98,13 +102,17 @@
                     <div class="col-md-6">
                       <p class="mb-1">
                         <i class="fas fa-map-marker-alt me-2 text-primary"></i>
-                        <!-- <strong>Dirección:</strong>
-                        <span th:text="${ped.direccion}"></span> -->
+                        <strong>Dirección:</strong>
+                        <span th:text="${ped.direccion}"></span>
                       </p>
                       <p class="mb-0">
-                        <i class="fas fa-map-marked me-2 text-primary"></i>
-                        <!-- <strong>Referencia:</strong>
-                        <span th:text="${ped.referencia}"></span> -->
+                        <i class="fas fa-credit-card me-2 text-primary"></i>
+                        <strong>Método de pago:</strong>
+                        <span
+                          th:text="${ped.metodoPago == 'efectivo' ? 'Efectivo' : 'Transferencia bancaria'}"
+                          class="badge"
+                          th:classappend="${ped.metodoPago == 'efectivo' ? 'bg-success' : 'bg-info'}"
+                        ></span>
                       </p>
                     </div>
                   </div>
@@ -127,7 +135,10 @@
                       <tbody>
                         <tr th:each="det : ${ped.detalles}">
                           <td th:text="${det.producto.nombre}"></td>
-                          <td class="text-center" th:text="${det.cantidad}"></td>
+                          <td
+                            class="text-center"
+                            th:text="${det.cantidad}"
+                          ></td>
                           <td
                             class="text-end"
                             th:text="${'$' + #numbers.formatDecimal(det.precioUnitario, 1, 2)}"
@@ -151,18 +162,26 @@
                   </div>
 
                   <div class="d-flex justify-content-end mt-3 button-group">
-                    <button class="btn btn-success me-2">
-                      <i class="fas fa-check me-1"></i> Marcar como Completado
-                    </button>
-                    <button class="btn btn-danger">
-                      <i class="fas fa-times me-1"></i> Cancelar Pedido
+                    <button
+                      class="btn btn-outline-success enviar-whatsapp"
+                      th:data-id="${ped.id}"
+                      th:data-nombre="${ped.nombre} + ' ' + ${ped.apellido}"
+                      th:data-telefono="${ped.telefono}"
+                      th:data-total="${ped.total}"
+                      th:data-direccion="${ped.direccion}"
+                      th:data-metodopago="${ped.metodoPago}"
+                    >
+                      <i class="fab fa-whatsapp me-1"></i> Enviar por WhatsApp
                     </button>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div th:if="${#lists.isEmpty(pedidos)}" class="text-center py-5 no-orders">
+            <div
+              th:if="${#lists.isEmpty(pedidos)}"
+              class="text-center py-5 no-orders"
+            >
               <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
               <h4 class="text-muted">No hay pedidos registrados</h4>
               <p class="text-muted">
@@ -190,6 +209,52 @@
               icon.classList.add("fa-chevron-up");
             }
           }, 100); // Ajusta este valor si es necesario
+        });
+      });
+
+      document.querySelectorAll(".enviar-whatsapp").forEach((button) => {
+        button.addEventListener("click", () => {
+          const nombre = button.dataset.nombre;
+          const telefono = button.dataset.telefono;
+          const total = parseFloat(button.dataset.total).toFixed(2);
+          const direccion = button.dataset.direccion;
+          const metodoPago = button.dataset.metodopago;
+
+          // Datos bancarios si es transferencia
+          const banco = "Banco Pichincha";
+          const cuenta = "1234567890";
+          const titular = "Titular de cuenta (Ejemplo)";
+
+          let mensaje = "";
+
+          if (metodoPago === "transferencia") {
+            mensaje = `Hola ${nombre} 👋, gracias por tu pedido! Aquí tienes los datos para realizar el pago:
+
+🧾 Total a pagar: $${total}
+💳 Método de pago: Transferencia bancaria
+🏦 Cuenta a depositar:
+${banco}
+CTA: ${cuenta}
+A nombre de: ${titular}
+
+📍 Dirección registrada: ${direccion}
+
+Por favor realiza el pago y envíanos el comprobante para confirmar tu pedido. ¡Gracias por tu preferencia! 🙌`;
+          } else {
+            mensaje = `Hola ${nombre} 👋, gracias por tu pedido!
+
+🧾 Total a pagar: $${total}
+💳 Método de pago: Efectivo
+
+📍 Dirección registrada: ${direccion}
+
+Tu pedido será entregado con pago en efectivo al momento de la entrega. ¡Gracias por tu preferencia! 🙌`;
+          }
+
+          const url = `https://wa.me/593${telefono.slice(
+            1
+          )}?text=${encodeURIComponent(mensaje)}`;
+          window.open(url, "_blank");
         });
       });
     </script>

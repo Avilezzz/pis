@@ -29,6 +29,9 @@ public class PedidoController {
         nuevo.setApellido(request.getApellido());
         nuevo.setTelefono(request.getTelefono());
         nuevo.setEmail(request.getEmail());
+         nuevo.setDireccion(request.getDireccion());
+        nuevo.setMetodoPago(request.getMetodoPago());
+       
 
         // Procesar items
         if (request.getItems() != null) {
@@ -49,5 +52,7 @@ public class PedidoController {
         pedidoRepository.save(nuevo);
         return ResponseEntity.ok().build();
     }
+
+   
     
 }

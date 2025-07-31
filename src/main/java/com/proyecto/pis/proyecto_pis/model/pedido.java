@@ -7,6 +7,7 @@ import java.util.ArrayList;
 // entidad detalle
 import com.proyecto.pis.proyecto_pis.model.PedidoDetalle;
 
+
 @Entity
 public class pedido {
 
@@ -19,7 +20,11 @@ public class pedido {
     private String telefono;
     private String email;
 
-    // Getters y Setters
+    private String direccion;
+    private String metodoPago; // "efectivo" o "transferencia"
+
+      @Column(name = "estado")
+    private String estado;
 
     public Long getId() {
         return id;
@@ -60,6 +65,32 @@ public class pedido {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getMetodoPago() {
+        return metodoPago;
+    }
+
+    public void setMetodoPago(String metodoPago) {
+        this.metodoPago = metodoPago;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+   
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PedidoDetalle> detalles = new ArrayList<>();

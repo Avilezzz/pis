@@ -7,6 +7,8 @@ public class PedidoRequest {
     private String apellido;
     private String telefono;
     private String email;
+     private String direccion;
+    private String metodoPago;
     private List<ItemRequest> items;
 
     public String getNombre() {
@@ -40,6 +42,24 @@ public class PedidoRequest {
     public void setEmail(String email) {
         this.email = email;
     }
+
+     public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getMetodoPago() {
+        return metodoPago;
+    }
+
+    public void setMetodoPago(String metodoPago) {
+        this.metodoPago = metodoPago;
+    }
+
+    
 
     public List<ItemRequest> getItems() {
         return items;

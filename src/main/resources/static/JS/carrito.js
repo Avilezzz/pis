@@ -165,6 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
       apellido: formData.get("apellido"),
       telefono: formData.get("telefono"),
       email: formData.get("email"),
+       direccion: formData.get("direccion"),
+      metodoPago: formData.get("metodoPago"),
       items: cart.map((it) => ({ productId: it.id, quantity: it.quantity })),
     };
 
