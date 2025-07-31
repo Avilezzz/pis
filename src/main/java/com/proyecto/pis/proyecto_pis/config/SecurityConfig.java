@@ -19,11 +19,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            // Deshabilitar CSRF completamente
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // Permitir acceso público a recursos estáticos y login
                 .requestMatchers("/login", "/css/**", "/img/**", "/js/**").permitAll()
                 // Permitir acceso público a rutas específicas
-                .requestMatchers("/", "/productos/menu", "/contacto", "/pedidos/guardar").permitAll()
+                .requestMatchers("/", "/productos/menu", "/contacto").permitAll()
+                // Permitir acceso público a endpoints de API REST
+                .requestMatchers("/pedidos/**").permitAll()
                 // Proteger solo las rutas específicas que mencionaste
                 .requestMatchers("/productos/lista", "/admin/**").authenticated()
                 // Permitir acceso a todas las demás rutas por defecto
@@ -38,9 +42,7 @@ public class SecurityConfig {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
-            )
-            // Deshabilitar CSRF para APIs REST (opcional, solo si tienes problemas con formularios)
-            .csrf(csrf -> csrf.disable());
+            );
 
         return http.build();
     }

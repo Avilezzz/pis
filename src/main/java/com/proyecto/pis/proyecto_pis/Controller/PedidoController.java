@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pedidos")
+@CrossOrigin(origins = "*") // Permitir CORS si es necesario
 public class PedidoController {
 
     @Autowired
@@ -24,6 +25,7 @@ public class PedidoController {
 
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarPedido(@RequestBody PedidoRequest request) {
+        System.out.println("Recibiendo pedido: " + request.getNombre() + " " + request.getApellido());
         pedido nuevo = new pedido();
         nuevo.setNombre(request.getNombre());
         nuevo.setApellido(request.getApellido());
@@ -49,8 +51,14 @@ public class PedidoController {
             }
         }
 
-        pedidoRepository.save(nuevo);
-        return ResponseEntity.ok().build();
+        try {
+            pedidoRepository.save(nuevo);
+            System.out.println("Pedido guardado exitosamente");
+            return ResponseEntity.ok().body("{\"status\":\"success\",\"message\":\"Pedido guardado exitosamente\"}");
+        } catch (Exception e) {
+            System.out.println("Error al guardar pedido: " + e.getMessage());
+            return ResponseEntity.badRequest().body("{\"status\":\"error\",\"message\":\"Error al guardar pedido: " + e.getMessage() + "\"}");
+        }
     }
 
    
