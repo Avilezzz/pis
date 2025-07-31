@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class PaginaController {
 
-    @GetMapping("/")
+    @GetMapping("/inicio")
     public String mostrarInicio() {
         return "html/index"; // Vista: templates/html/index.html
     }

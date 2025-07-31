@@ -19,9 +19,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            // Deshabilitar CSRF completamente
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/css/**", "/img/**").permitAll()
-                .requestMatchers("/admin/**", "/productos/lista").authenticated()
+                // Permitir acceso público a recursos estáticos y login
+                .requestMatchers("/login", "/css/**", "/img/**", "/js/**").permitAll()
+                // Permitir acceso público a rutas específicas
+                .requestMatchers("/", "/productos/menu", "/contacto").permitAll()
+                // Permitir acceso público solo para crear pedidos
+                .requestMatchers("/pedidos/guardar").permitAll()
+                // Proteger solo las rutas específicas que mencionaste
+                .requestMatchers("/productos/lista", "/admin/**").authenticated()
+                // Permitir acceso a todas las demás rutas por defecto
+                .anyRequest().permitAll()
             )
             .formLogin(form -> form
                 .loginPage("/login")
