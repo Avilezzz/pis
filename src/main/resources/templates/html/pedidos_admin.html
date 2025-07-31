@@ -282,7 +282,7 @@ Tu pedido será entregado con pago en efectivo al momento de la entrega. ¡Graci
             this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Procesando...';
 
             // Realizar petición DELETE
-            fetch(`/pedidos/eliminar/${pedidoId}`, {
+            fetch(`/admin/pedido/eliminar/${pedidoId}`, {
               method: "DELETE",
               headers: {
                 "Content-Type": "application/json",

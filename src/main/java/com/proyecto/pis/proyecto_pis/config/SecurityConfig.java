@@ -28,8 +28,6 @@ public class SecurityConfig {
                 .requestMatchers("/", "/productos/menu", "/contacto").permitAll()
                 // Permitir acceso público solo para crear pedidos
                 .requestMatchers("/pedidos/guardar").permitAll()
-                // Proteger endpoints administrativos de pedidos
-                .requestMatchers("/pedidos/eliminar/**").authenticated()
                 // Proteger solo las rutas específicas que mencionaste
                 .requestMatchers("/productos/lista", "/admin/**").authenticated()
                 // Permitir acceso a todas las demás rutas por defecto
